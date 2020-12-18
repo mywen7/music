@@ -1,5 +1,5 @@
 # project
-基于vue3+Element-plus+nodejs模仿的音乐播放器
+基于vue3+Element-plus+nodejs模仿的音乐播放器，菜鸟练手项目。
 ## Project setup
 ```
 npm install
