@@ -12,7 +12,7 @@ const router = createRouter({
     {
       path: '',
       name: 'layout',
-      component: () => import(/** webpackChunkName: "layout" */'../layout/index.vue'),
+      component: () => import(/* webpackChunkName: "layout" */'../layout/index.vue'),
       children: [
         {
           path: '/discovery',
@@ -35,7 +35,7 @@ const router = createRouter({
         {
           path: '/songs',
           name: 'songs',
-          component: () => import(/** webpackChunkName: "songs" */'../views/songs/index.vue'),
+          component: () => import(/* webpackChunkName: "songs" */'../views/songs/index.vue'),
           meta: {
             title: '最新音乐',
             icon: 'yinyue',
@@ -44,7 +44,7 @@ const router = createRouter({
         {
           path: '/mvs',
           name: 'mvs',
-          component: () => import(/** webpackChunkName: "mvs" */'../views/mvs/index.vue'),
+          component: () => import(/* webpackChunkName: "mvs" */'../views/mvs/index.vue'),
           meta: {
             title: '最新mv',
             icon: 'mvs',
