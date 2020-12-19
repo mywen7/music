@@ -6,6 +6,7 @@
   />
 </template>
 <script lang="ts">
+import { defineComponent } from 'vue';
 import { toRem } from '../libs/rem';
 import { computed } from 'vue';
 
@@ -14,7 +15,7 @@ interface RefStyle {
   transform?: string;
 }
 
-export default {
+export default defineComponent ({
   name: 'Icon',
   props: {
     size: {
@@ -64,5 +65,5 @@ export default {
       backDropSize,
     }
   },
-}
+})
 </script>
