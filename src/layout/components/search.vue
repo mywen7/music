@@ -18,6 +18,7 @@
           v-model="searchKey"
           prefix-icon="el-icon-search"
           placeholder="搜索"
+          @input="searchInput"
         ></el-input>
       </template>
     </el-popover>
@@ -30,10 +31,19 @@ import { defineComponent, ref, Ref } from 'vue';
 import SearchPanel from './search-panel.vue';
 import SearchSection from './search-section.vue';
 import { PanelInfo, SongSection } from '../interface';
+import { fetch } from '../../libs/fetch';
 
 function useSearchFn() {
   const searchKey = ref('');
-  return { searchKey }
+  const searchInput = async (keyword: string) => {
+    const res = await fetch('/search', {
+      method: 'GET',
+      query: {
+        keywords: keyword,
+      },
+    })
+  }
+  return { searchKey, searchInput }
 }
 
 function useSearchPanel(searchKey: Ref<string>) {
@@ -63,13 +73,14 @@ export default defineComponent ({
     SearchSection,
   },
   setup() {
-    const { searchKey } = useSearchFn();
+    const { searchKey, searchInput } = useSearchFn();
     const { panelInfo, checkTag } = useSearchPanel( searchKey);
 
     return {
       searchKey,
       panelInfo,
       checkTag,
+      searchInput,
     }
   },
 });
