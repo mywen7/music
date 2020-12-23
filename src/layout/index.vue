@@ -1,6 +1,6 @@
 <template>
   <el-container>
-    <el-header>
+    <el-header style="padding: 0;">
       <yi-header />
     </el-header>
     <el-container>
