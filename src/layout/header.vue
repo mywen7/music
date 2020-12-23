@@ -31,7 +31,7 @@
         </div>
       </div>
       <!-- 缩起播放器 -->
-      <div
+      <!-- <div
         @click="onClickDown"
         class="shrink-player"
         v-if="isPlayerShow"
@@ -40,21 +40,20 @@
           :backdrop="true"
           type="down"
         />
-      </div>
+      </div> -->
       <!-- 路由记录器 -->
       <!-- <div
         class="history"
         v-show="!isPlayerShow"
       >
         <RoutesHistory />
-      </div>
-
-      <div class="right">
-        <div class="search-wrap">
-          <Search />
-        </div>
-        <Theme />
       </div> -->
+
+      
+    </div>
+    <div class="right">
+        <search class="search"/>
+        <!-- <Theme /> -->
     </div>
   </div>
 </template>
@@ -64,8 +63,10 @@
 import { defineComponent } from 'vue';
 import { useRouter } from 'vue-router';
 import { requestFullScreenFn, exitFullscreenFn, isFullscreenFn } from '../libs/common';
+import search from './components/search.vue';
 
 export default defineComponent({
+  components: { search },
   setup() {
     const onClickLogo = () => {
       useRouter().push({name: 'discovery'});
@@ -90,6 +91,8 @@ export default defineComponent({
   .header {
     background-color: $theme-color;
     height: 100%;
+    display: flex;
+    justify-content: space-between;
     .buttons {
       width: 150px;
       height: $header-height;
@@ -119,6 +122,12 @@ export default defineComponent({
           color: $black;
           transition: $transition;
         }
+      }
+    }
+    .right {
+      @include flex-center();
+      .search {
+        margin-right: 30px;
       }
     }
   }
