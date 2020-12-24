@@ -18,5 +18,5 @@ npm run build
 npm run lint
 ```
 友情链接：
-https://github.com/sl1673495/vue-netease-music
+https://github.com/sl1673495/vue-netease-music <br>
 https://binaryify.github.io/NeteaseCloudMusicApi/
