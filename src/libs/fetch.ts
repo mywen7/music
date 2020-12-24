@@ -8,9 +8,9 @@ interface HttpModel {
   param?: object;
   data?: object;
 }
-export async function fetch(api: string, option: HttpModel) {
+export async function http(api: string, option: HttpModel) {
   const method = `${option.method}`;
-  let url = 'http://172.16.110.119:3000/' + api.replace(/^\//, '');
+  let url = 'http://localhost:3000/' + api.replace(/^\//, '');
 
   if (method === 'GET') {
     const queryString = qs.stringify(option.query);
@@ -54,3 +54,4 @@ export async function fetch(api: string, option: HttpModel) {
     throw e;
   }
 }
+

@@ -31,12 +31,12 @@ import { defineComponent, ref, Ref } from 'vue';
 import SearchPanel from './search-panel.vue';
 import SearchSection from './search-section.vue';
 import { PanelInfo, SongSection } from '../interface';
-import { fetch } from '../../libs/fetch';
+import { http } from '../../libs/fetch';
 
 function useSearchFn() {
   const searchKey = ref('');
   const searchInput = async (keyword: string) => {
-    const res = await fetch('/search', {
+    const res = await http('/search', {
       method: 'GET',
       query: {
         keywords: keyword,
