@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="title">
-      <Icon type="music" size="16"/>
+      <Icon type="music" :size="16"/>
       单曲
     </div>
     <div 

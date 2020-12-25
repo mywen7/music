@@ -9,3 +9,9 @@
   align-items: center;
   justify-content: center;
 }
+@mixin justify-space($direction: row) {
+  display: flex;
+  flex-direction: $direction;
+  align-items: center;
+  justify-content: space-between;
+}
