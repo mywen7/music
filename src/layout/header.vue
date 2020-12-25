@@ -1,35 +1,7 @@
 <template>
   <div class="header"> 
     <div class="left">
-      <div class="buttons">
-        <div
-          @click="onClickLogo"
-          class="mac-button red"
-        >
-          <Icon
-            :size="11"
-            type="home"
-          />
-        </div>
-        <div
-          @click="exitFullScreen"
-          class="mac-button yellow"
-        >
-          <Icon
-            :size="11"
-            type="minus"
-          />
-        </div>
-        <div
-          @click="fullscreen"
-          class="mac-button green"
-        >
-          <Icon
-            :size="11"
-            type="fullscreen"
-          />
-        </div>
-      </div>
+      <screen-btns @click-logo="onClickLogo"/>
       <!-- 缩起播放器 -->
       <!-- <div
         @click="onClickDown"
@@ -55,12 +27,13 @@
 
 import { defineComponent } from 'vue';
 import { useRouter } from 'vue-router';
-import { requestFullScreenFn, exitFullscreenFn, isFullscreenFn } from '../libs/common';
+import ScreenBtns from './components/screen-btns.vue';
 import search from './components/search.vue';
 import RoutesHistory from './components/routes-history.vue';
 
 export default defineComponent({
   components: {
+    ScreenBtns,
     search,
     RoutesHistory,
   },
@@ -68,18 +41,9 @@ export default defineComponent({
     const onClickLogo = () => {
       useRouter().push({name: 'discovery'});
     }
-    const fullscreen = () => {
-      requestFullScreenFn(document.documentElement);
-    }
-    const exitFullScreen = () => {
-      if (isFullscreenFn()) {
-        exitFullscreenFn();
-      }
-    }
+
     return {
       onClickLogo,
-      fullscreen,
-      exitFullScreen,
     };
   },
 });
@@ -93,39 +57,7 @@ export default defineComponent({
     .left {
       width: 300px;
       @include flex-center();
-      .buttons {
-        width: 150px;
-        height: $header-height;
-        display: flex;
-        align-items: center;
-        &:hover {
-          .mac-button > i {
-            opacity: 1;
-          }
-        }
-        .mac-button {
-          @include round(15px);
-          @include flex-center();
-          margin-right: 10px;
-          &.red {
-            background-color:  #ed655a;
-          }
-          &.green {
-            background-color: #72be47;
-          }
-          &.yellow {
-            background-color: #e0c04c;
-          }
-          
-          i {
-            opacity: 0;
-            color: $black;
-            transition: $transition;
-          }
-        }
-      }
     }
-    
     .right {
       @include flex-center();
       .search {
