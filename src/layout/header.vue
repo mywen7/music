@@ -42,14 +42,7 @@
         />
       </div> -->
       <!-- 路由记录器 -->
-      <!-- <div
-        class="history"
-        v-show="!isPlayerShow"
-      >
-        <RoutesHistory />
-      </div> -->
-
-      
+      <routes-history/>
     </div>
     <div class="right">
         <search class="search"/>
@@ -64,9 +57,13 @@ import { defineComponent } from 'vue';
 import { useRouter } from 'vue-router';
 import { requestFullScreenFn, exitFullscreenFn, isFullscreenFn } from '../libs/common';
 import search from './components/search.vue';
+import RoutesHistory from './components/routes-history.vue';
 
 export default defineComponent({
-  components: { search },
+  components: {
+    search,
+    RoutesHistory,
+  },
   setup() {
     const onClickLogo = () => {
       useRouter().push({name: 'discovery'});
@@ -93,37 +90,42 @@ export default defineComponent({
     height: 100%;
     display: flex;
     justify-content: space-between;
-    .buttons {
-      width: 150px;
-      height: $header-height;
+    .left {
+      width: 300px;
       @include flex-center();
-
-      &:hover {
-        .mac-button > i {
-          opacity: 1;
+      .buttons {
+        width: 150px;
+        height: $header-height;
+        display: flex;
+        align-items: center;
+        &:hover {
+          .mac-button > i {
+            opacity: 1;
+          }
         }
-      }
-      .mac-button {
-        @include round(15px);
-        @include flex-center();
-        margin-right: 10px;
-        &.red {
-          background-color:  #ed655a;
-        }
-        &.green {
-          background-color: #72be47;
-        }
-        &.yellow {
-          background-color: #e0c04c;
-        }
-        
-        i {
-          opacity: 0;
-          color: $black;
-          transition: $transition;
+        .mac-button {
+          @include round(15px);
+          @include flex-center();
+          margin-right: 10px;
+          &.red {
+            background-color:  #ed655a;
+          }
+          &.green {
+            background-color: #72be47;
+          }
+          &.yellow {
+            background-color: #e0c04c;
+          }
+          
+          i {
+            opacity: 0;
+            color: $black;
+            transition: $transition;
+          }
         }
       }
     }
+    
     .right {
       @include flex-center();
       .search {
