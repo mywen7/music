@@ -101,8 +101,8 @@ function useSearchFn() {
 
 function useSearchPanel(searchKey: Ref<string>) {
   const panelInfo: Ref<PanelInfo[]> = ref([]);
+  const router = useRouter();
   const checkTag = (content: string) => {
-    const router = useRouter();
     router.replace({name: 'search', params: {song: content}})
   }
   onMounted(async () => {

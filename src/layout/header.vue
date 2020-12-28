@@ -1,7 +1,7 @@
 <template>
   <div class="header"> 
     <div class="left">
-      <screen-btns @click-logo="onClickLogo"/>
+      <screen-btns @click-logo="$router.push({name: 'discovery'})"/>
       <!-- 缩起播放器 -->
       <!-- <div
         @click="onClickDown"
@@ -37,15 +37,6 @@ export default defineComponent({
     ScreenBtns,
     search,
     RoutesHistory,
-  },
-  setup() {
-    const onClickLogo = () => {
-      useRouter().push({name: 'discovery'});
-    }
-
-    return {
-      onClickLogo,
-    };
   },
 });
 </script>
