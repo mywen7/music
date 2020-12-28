@@ -51,7 +51,7 @@ const router = createRouter({
           },
         },
         {
-          path: '/search',
+          path: '/search/:song',
           name: 'search',
           component: () => import(/* webpackChunkName: "search" */'../views/search/index.vue'),
           meta: {

@@ -8,7 +8,9 @@
       class="content"
       v-for="(content, index) in contentList"
     >
-      {{ content.name }}-{{ content.artists}}
+      {{ content.name }}
+      <span v-if="content.artists">-</span>
+      {{ content.artists}}
     </div>
   </div>
 </template>

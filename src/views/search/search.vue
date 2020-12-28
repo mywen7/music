@@ -34,21 +34,22 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, Ref, computed } from 'vue';
+import { defineComponent, ref, Ref, computed, onMounted } from 'vue';
 import TagSection from './components/tag-section.vue';
 import SuggestSection from './components/suggest-section.vue';
 import { PanelInfo, SongSection, Song, TypeEnum } from './interface';
 import { http } from '../../libs/fetch';
+import { useRouter } from 'vue-router';
 
 const transforSong = (data: any) => {
-  return data.map((ele: any) => {
+  return data?.map((ele: any) => {
     return {
-      id: ele.id,
-      name: ele.name,
-      artists: ele.artists.map((art: any) => art.name).join('/') || '',
+      id: ele.id || -1,
+      name: ele.name || '',
+      artists: ele?.artists?.map((art: any) => art.name).join('/') || ele?.artist?.name || '',
       album: {
-        id: ele.album.id,
-        name: ele.album.name,
+        id: ele?.album?.id || -1,
+        name: ele?.album?.name || '',
       } || '',
     }
   })
@@ -65,25 +66,57 @@ function useSearchFn() {
           keywords: searchKey.value,
         },
       })
+      const suggest = res.result;
+      suggestList.value = [
+        {
+          title: '单曲',
+          type: 'music',
+          content: transforSong(suggest.songs),
+        },
+        {
+          title: '歌单',
+          type: 'playlist',
+          content: transforSong(suggest.playlists),
+        },
+        {
+          title: 'mv',
+          type: 'mv',
+          content: transforSong(suggest.mvs),
+        },
+        {
+          title: '歌手',
+          type: 'yonghu',
+          content: transforSong(suggest.artists),
+        },
+        {
+          title: '专辑',
+          type: 'playlist-menu',
+          content: transforSong(suggest.albums),
+        },
+      ].filter((item) => item.content)
     }
   }
   return { searchKey, isSearch, suggestInput, suggestList }
 }
 
 function useSearchPanel(searchKey: Ref<string>) {
-  const panelInfo: Ref<PanelInfo[]> = ref([
-      {
-        title: '热门搜索',
-        content: ['aaaaaaaaa', 'bbbbbbbb', 'ccccccccc'],
-      },
-      {
-        title: '最近搜索',
-        content: ['ssssssss', '传传传传传传v', '啊啊啊'],
-      },
-    ]);
+  const panelInfo: Ref<PanelInfo[]> = ref([]);
   const checkTag = (content: string) => {
-    searchKey.value = content;
+    const router = useRouter();
+    router.replace({name: 'search', params: {song: content}})
   }
+  onMounted(async () => {
+    const res = await http('search/hot', {
+      method: 'POST',
+    })
+    const data = res.result.hots.map((hot: any) => hot.first);
+    const hotContent: PanelInfo = {
+      title: '热门搜索',
+      content: [...data],
+    }
+    panelInfo.value.push(hotContent);
+  })
+
   return { panelInfo, checkTag };
 }
 
