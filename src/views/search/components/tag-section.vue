@@ -38,7 +38,7 @@ export default defineComponent ({
   color: $black;
   
 }
-::v-deep .el-tag {
+:deep(.el-tag) {
   cursor: pointer;
   margin: 6px 5px;
   background-color: $theme-color;

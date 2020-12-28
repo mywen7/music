@@ -50,6 +50,14 @@ const router = createRouter({
             icon: 'mvs',
           },
         },
+        {
+          path: '/search',
+          name: 'search',
+          component: () => import(/* webpackChunkName: "search" */'../views/search/index.vue'),
+          meta: {
+            title: '搜索',
+          }
+        },
       ],
     },
   ],

@@ -14,7 +14,7 @@
   "dependencies": {
     "axios": "^0.21.0",
     "core-js": "^3.6.5",
-    "element-plus": "^1.0.1-beta.9",
+    "element-plus": "^1.0.1-beta.14",
     "qs": "^6.5.2",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0-0"

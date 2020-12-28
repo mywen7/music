@@ -47,13 +47,13 @@ export default defineComponent ({
 </script>
 
 <style lang="scss" scoped>
-::v-deep .el-button {
+:deep(.el-button) {
   background-color: $theme-color;
   color: $white;
   border: none;
 }
-::v-deep .el-button.is-plain:focus,
-::v-deep .el-button.is-plain:hover {
+:deep(.el-button.is-plain:focus),
+:deep(.el-button.is-plain:hover) {
   background-color: $theme-color;
   border: 1px solid $white;
   color: $white;
