@@ -3,18 +3,22 @@ export interface PanelInfo{
   content: string[];
 }
 
-interface Nomal {
+interface NomalName {
   id: number;
   name: string;
+}
+export interface NomalType {
+  id: number;
+  type: string;
 }
 export interface Song {
   id: number;
   name: string;
   artists?: string;
-  album?: Nomal;
+  album?: NomalName;
 }
 export interface SongSection {
-  title: TypeEnum;
+  title: string;
   type: string;
   content: Song[];
 }

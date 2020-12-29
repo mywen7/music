@@ -2,7 +2,7 @@
   <div>
     <div class="title">
       <Icon :type="type" :size="16"/>
-      {{ title }}
+      {{ titleTip }}
     </div>
     <div 
       class="content"
@@ -18,13 +18,31 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { Song, TypeEnum } from '../interface';
+import { Song, TypeEnum, NomalType } from '../interface';
 
+function transForType(type: string) {
+  switch (type) {
+    case 'playlist':
+      return TypeEnum.playlist;
+      break;
+    case 'mv':
+      return TypeEnum.mv;
+      break;
+    case 'artist':
+      return TypeEnum.artist;
+      break;
+    case 'album':
+      return TypeEnum.album;
+      break;
+    default:
+      return TypeEnum.song;
+  }
+}
 export default defineComponent ({
   props: {
     title: {
-      type: String as PropType<TypeEnum>,
-      default: '单曲',
+      type: String,
+      default: 'song',
     },
     type: {
       type: String,
@@ -33,16 +51,17 @@ export default defineComponent ({
     contentList: Array as PropType<Song[]>,
   },
   setup(props, { emit }) {
+    const titleTip = transForType(props.title);
     const search = (content: Song) => {
-      emit('search',
-        {
-          title: props.title,
-          content,
+      const data: NomalType = {
+          type: props.title,
+          id: content.id,
         }
-      )
+      emit('search', data )
     }
     return {
       search,
+      titleTip,
     }
   }
 });

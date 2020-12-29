@@ -51,7 +51,7 @@ const router = createRouter({
           },
         },
         {
-          path: '/search/:name/:type',
+          path: '/search',
           name: 'search',
           component: () => import(/* webpackChunkName: "search" */'../views/search/index.vue'),
           meta: {
@@ -59,6 +59,46 @@ const router = createRouter({
           }
         },
       ],
+    },
+    {
+      path: '/song',
+      name: 'song',
+      component: () => import(/* webpackChunkName: "song" */'../views/play/song.vue'),
+      meta: {
+        title: '单曲',
+      },
+    },
+    {
+      path: '/playlist',
+      name: 'playlist',
+      component: () => import(/* webpackChunkName: "song" */'../views/play/playlist.vue'),
+      meta: {
+        title: '歌单',
+      },
+    },
+    {
+      path: '/mv',
+      name: 'mv',
+      component: () => import(/* webpackChunkName: "song" */'../views/play/mv.vue'),
+      meta: {
+        title: 'MV',
+      },
+    },
+    {
+      path: '/artist',
+      name: 'artist',
+      component: () => import(/* webpackChunkName: "song" */'../views/play/artist.vue'),
+      meta: {
+        title: '歌手',
+      },
+    },
+    {
+      path: '/album',
+      name: 'album',
+      component: () => import(/* webpackChunkName: "song" */'../views/play/album.vue'),
+      meta: {
+        title: '专辑',
+      },
     },
   ],
 });

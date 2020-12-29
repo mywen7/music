@@ -40,7 +40,7 @@
 import { defineComponent, ref, Ref, computed, onMounted, watch, reactive } from 'vue';
 import TagSection from './components/tag-section.vue';
 import SuggestSection from './components/suggest-section.vue';
-import { PanelInfo, SongSection, Song, TypeEnum } from './interface';
+import { PanelInfo, SongSection, Song, NomalType } from './interface';
 import { http } from '../../libs/fetch';
 import { useRouter } from 'vue-router';
 import { recentSearch, recentSearchFn } from './helper';
@@ -56,10 +56,10 @@ const transforSong = (data: any) => {
         name: ele?.album?.name || '',
       } || '',
     }
-  })
+  });
 }
 
-function useSuggestSection(toSearch: (name: string, type: string) => void) {
+function useSuggestSection() {
   const searchKey = ref('');
   const isSearch = computed(() => suggestList.value.length > 0 && searchKey.value.length > 0);
   const suggestList: Ref<SongSection[]> = ref([]);
@@ -74,47 +74,58 @@ function useSuggestSection(toSearch: (name: string, type: string) => void) {
       const suggest = res.result;
       suggestList.value = [
         {
-          title: TypeEnum.song,
+          title: 'song',
           type: 'music',
           content: transforSong(suggest.songs),
         },
         {
-          title: TypeEnum.playlist,
+          title: 'playlist',
           type: 'playlist',
           content: transforSong(suggest.playlists),
         },
         {
-          title: TypeEnum.mv,
+          title: 'mv',
           type: 'mv',
           content: transforSong(suggest.mvs),
         },
         {
-          title: TypeEnum.artist,
+          title: 'artist',
           type: 'yonghu',
           content: transforSong(suggest.artists),
         },
         {
-          title: TypeEnum.album,
+          title: 'album',
           type: 'playlist-menu',
           content: transforSong(suggest.albums),
         },
       ].filter((item) => item.content)
     }
   }
-
-  const suggestSearch = (song: any) => {
-    toSearch(song.content.name, 'songs');
+  const router = useRouter();
+  const suggestSearch = (event: NomalType) => {
+    router.push({
+      name: event.type,
+      query: {
+        id: event.id,
+      },
+    })
   }
   const searchChange = () => {
     recentSearchFn.add(searchKey.value);
-    toSearch(searchKey.value, 'songs')
+    router.push({
+      name: 'search',
+      query: {
+        s: searchKey.value,
+        type: 'songs',
+      },
+    })
   }
   return { searchKey, isSearch, suggestInput, suggestList, suggestSearch,
     searchChange,
   }
 }
 
-function useTagSection(searchKey: Ref<string>, toSearch: (name: string, type: string) => void) {
+function useTagSection() {
   const panelInfo: PanelInfo[] = reactive([
     {
       title: '热门搜索',
@@ -125,10 +136,16 @@ function useTagSection(searchKey: Ref<string>, toSearch: (name: string, type: st
       content: [],
     },
   ]);
-
+  const router = useRouter();
   const checkTag = (content: string) => {
     recentSearchFn.add(content);
-    toSearch(content, 'songs');
+    router.push({
+      name: 'search',
+      query: {
+        s: content,
+        type: 'songs',
+      },
+    })
   }
   const recentSearchClear = () => {
     recentSearchFn.clear();
@@ -151,21 +168,11 @@ export default defineComponent ({
     SuggestSection,
   },
   setup() {
-    const router = useRouter();
-    const toSearch = (name: string, type: string) => {
-      router.push({
-      name: 'search',
-      params: {
-        name,
-        type,
-      },
-    });
-    } 
     const {
       searchKey, isSearch, suggestInput, suggestList,
       suggestSearch, searchChange,
-    } = useSuggestSection(toSearch);
-    const { panelInfo, checkTag, recentSearchClear } = useTagSection( searchKey, toSearch );
+    } = useSuggestSection();
+    const { panelInfo, checkTag, recentSearchClear } = useTagSection();
 
     return {
       searchKey,
