@@ -43,7 +43,7 @@ export default defineComponent({
 <style lang="scss" scoped>
   .header {
     background-color: $theme-color;
-    height: 100%;
+    height: $header-height;
     display: flex;
     justify-content: space-between;
     .left {

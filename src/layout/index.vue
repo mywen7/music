@@ -4,7 +4,7 @@
       <yi-header />
     </el-header>
     <el-container>
-      <el-aside>
+      <el-aside width="240px">
         <sidebar />
       </el-aside>
       <el-main>

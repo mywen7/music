@@ -55,7 +55,7 @@ export default defineComponent ({
 <style lang="scss" scoped>
 .buttons {
   width: 150px;
-  height: $header-height;
+  height: 100%;
   display: flex;
   align-items: center;
   &:hover {

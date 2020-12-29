@@ -21,6 +21,7 @@ const router = createRouter({
           meta: {
             title: '发现音乐',
             icon: 'music',
+            sidebar: true,
           },
         },
         {
@@ -29,7 +30,8 @@ const router = createRouter({
           component: () => import(/* webpackChunkName: "playlists" */'../views/playlists/index.vue'),
           meta: {
             title: '推荐歌单',
-            icon: 'palylist-menu',
+            icon: 'playlist-menu',
+            sidebar: true,
           },
         },
         {
@@ -39,6 +41,7 @@ const router = createRouter({
           meta: {
             title: '最新音乐',
             icon: 'yinyue',
+            sidebar: true,
           },
         },
         {
@@ -47,7 +50,8 @@ const router = createRouter({
           component: () => import(/* webpackChunkName: "mvs" */'../views/mvs/index.vue'),
           meta: {
             title: '最新mv',
-            icon: 'mvs',
+            icon: 'mv',
+            sidebar: true,
           },
         },
         {
