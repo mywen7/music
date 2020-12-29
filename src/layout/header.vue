@@ -30,7 +30,7 @@ import { useRouter } from 'vue-router';
 import ScreenBtns from './components/screen-btns.vue';
 import search from '../views/search/search.vue';
 import RoutesHistory from './components/routes-history.vue';
-import { http } from '../libs/fetch';
+import http from '../libs/fetch';
 
 export default defineComponent({
   components: {

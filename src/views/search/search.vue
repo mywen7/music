@@ -42,7 +42,7 @@ import { defineComponent, ref, Ref, computed, onMounted, watch, reactive } from 
 import TagSection from './components/tag-section.vue';
 import SuggestSection from './components/suggest-section.vue';
 import { PanelInfo, SongSection, Song, NomalType } from './interface';
-import { http } from '../../libs/fetch';
+import http from '../../libs/fetch';
 import { useRouter } from 'vue-router';
 import { recentSearch, recentSearchFn } from './helper';
 

@@ -8,7 +8,7 @@ interface HttpModel {
   param?: object;
   data?: object;
 }
-export async function http(api: string, option: HttpModel) {
+async function http(api: string, option: HttpModel) {
   const method = `${option.method}`;
   let url = 'http://localhost:3000/' + api.replace(/^\//, '');
 
@@ -54,4 +54,6 @@ export async function http(api: string, option: HttpModel) {
     throw e;
   }
 }
+
+export default http;
 
