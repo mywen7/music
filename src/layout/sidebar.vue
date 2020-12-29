@@ -35,7 +35,7 @@ export default defineComponent ({
         active: route.name === currentRoute.name,
         name: route.name,
         path: route.path,
-        index: i + 1,
+        index: `${i + 1}`,
         route,
       }
     })
