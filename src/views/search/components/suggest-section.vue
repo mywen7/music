@@ -6,7 +6,8 @@
     </div>
     <div 
       class="content"
-      v-for="(content, index) in contentList"
+      v-for="content in contentList"
+      :key="content.id"
       @click="search(content)"
     >
       {{ content.name }}

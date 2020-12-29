@@ -9,6 +9,7 @@
       >
         <suggest-section
           v-for="(suggest, index) in suggestList"
+          :key="index"
           :type="suggest.type"
           :title="suggest.title"
           :content-list="suggest.content"
