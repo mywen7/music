@@ -12,20 +12,23 @@
           :type="suggest.type"
           :title="suggest.title"
           :content-list="suggest.content"
+          @search="suggestSearch"
         />
       </div>
       <tag-section  
         v-else
         :panelInfo="panelInfo" 
         @check-tag="checkTag"
+        @clear="recentSearchClear"
       />
       <template #reference>
         <el-input
           size="mini"
-          v-model="searchKey"
+          v-model.trim="searchKey"
           prefix-icon="el-icon-search"
           placeholder="搜索"
           @input="suggestInput"
+          @change="searchChange"
         ></el-input>
       </template>
     </el-popover>
@@ -34,12 +37,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, Ref, computed, onMounted } from 'vue';
+import { defineComponent, ref, Ref, computed, onMounted, watch, reactive } from 'vue';
 import TagSection from './components/tag-section.vue';
 import SuggestSection from './components/suggest-section.vue';
 import { PanelInfo, SongSection, Song, TypeEnum } from './interface';
 import { http } from '../../libs/fetch';
 import { useRouter } from 'vue-router';
+import { recentSearch, recentSearchFn } from './helper';
 
 const transforSong = (data: any) => {
   return data?.map((ele: any) => {
@@ -54,9 +58,10 @@ const transforSong = (data: any) => {
     }
   })
 }
-function useSearchFn() {
+
+function useSuggestSection(toSearch: (name: string, type: string) => void) {
   const searchKey = ref('');
-  const isSearch = computed(() => searchKey.value.length > 0);
+  const isSearch = computed(() => suggestList.value.length > 0 && searchKey.value.length > 0);
   const suggestList: Ref<SongSection[]> = ref([]);
   const suggestInput = async () => {
     if (searchKey.value.trim()) {
@@ -96,28 +101,47 @@ function useSearchFn() {
       ].filter((item) => item.content)
     }
   }
-  return { searchKey, isSearch, suggestInput, suggestList }
+
+  const suggestSearch = (song: any) => {
+    toSearch(song.content.name, 'songs');
+  }
+  const searchChange = () => {
+    recentSearchFn.add(searchKey.value);
+    toSearch(searchKey.value, 'songs')
+  }
+  return { searchKey, isSearch, suggestInput, suggestList, suggestSearch,
+    searchChange,
+  }
 }
 
-function useSearchPanel(searchKey: Ref<string>) {
-  const panelInfo: Ref<PanelInfo[]> = ref([]);
-  const router = useRouter();
+function useTagSection(searchKey: Ref<string>, toSearch: (name: string, type: string) => void) {
+  const panelInfo: PanelInfo[] = reactive([
+    {
+      title: '热门搜索',
+      content: [],
+    },
+    {
+      title: '搜索历史',
+      content: [],
+    },
+  ]);
+
   const checkTag = (content: string) => {
-    router.replace({name: 'search', params: {song: content}})
+    recentSearchFn.add(content);
+    toSearch(content, 'songs');
+  }
+  const recentSearchClear = () => {
+    recentSearchFn.clear();
   }
   onMounted(async () => {
     const res = await http('search/hot', {
       method: 'POST',
     })
     const data = res.result.hots.map((hot: any) => hot.first);
-    const hotContent: PanelInfo = {
-      title: '热门搜索',
-      content: [...data],
-    }
-    panelInfo.value.push(hotContent);
+    panelInfo[0].content = data;
+    panelInfo[1].content = recentSearch;
   })
-
-  return { panelInfo, checkTag };
+  return { panelInfo, checkTag, recentSearchClear };
 }
 
 export default defineComponent ({
@@ -127,8 +151,21 @@ export default defineComponent ({
     SuggestSection,
   },
   setup() {
-    const { searchKey, isSearch, suggestInput, suggestList } = useSearchFn();
-    const { panelInfo, checkTag } = useSearchPanel( searchKey);
+    const router = useRouter();
+    const toSearch = (name: string, type: string) => {
+      router.push({
+      name: 'search',
+      params: {
+        name,
+        type,
+      },
+    });
+    } 
+    const {
+      searchKey, isSearch, suggestInput, suggestList,
+      suggestSearch, searchChange,
+    } = useSuggestSection(toSearch);
+    const { panelInfo, checkTag, recentSearchClear } = useTagSection( searchKey, toSearch );
 
     return {
       searchKey,
@@ -137,6 +174,9 @@ export default defineComponent ({
       checkTag,
       suggestInput,
       suggestList,
+      recentSearchClear,
+      suggestSearch,
+      searchChange,
     }
   },
 });

@@ -7,6 +7,7 @@
     <div 
       class="content"
       v-for="(content, index) in contentList"
+      @click="search(content)"
     >
       {{ content.name }}
       <span v-if="content.artists">-</span>
@@ -17,7 +18,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { Song} from '../interface';
+import { Song } from '../interface';
 
 export default defineComponent ({
   props: {
@@ -31,6 +32,19 @@ export default defineComponent ({
     },
     contentList: Array as PropType<Song[]>,
   },
+  setup(props, { emit }) {
+    const search = (content: Song) => {
+      emit('search',
+        {
+          title: props.title,
+          content,
+        }
+      )
+    }
+    return {
+      search,
+    }
+  }
 });
 </script>
 

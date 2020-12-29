@@ -4,8 +4,22 @@
       v-for="(panel,index) in panelInfo"
       :key="index"
     >
-      <div class="section">
-        {{ panel.title }}
+      <div 
+        class="section" 
+        v-if="panel.content.length"
+      >
+        <span>{{ panel.title }}</span>
+        <span 
+          class="delete"
+          v-if="panel.title === '搜索历史'"
+          @click="$emit('clear')"
+        >
+          清空
+          <Icon 
+            :size="12"
+            type="remove"
+          />
+        </span>
       </div>
       <div>
         <el-tag 
@@ -34,9 +48,15 @@ export default defineComponent ({
 
 <style lang="scss" scoped>
 .section {
+  cursor: default;
   font-size: $font-size-sm;
   color: $black;
-  
+  margin: 10px 0;
+  display: flex;
+  justify-content: space-between;
+  .delete {
+    color: #686464;
+  }
 }
 :deep(.el-tag) {
   cursor: pointer;

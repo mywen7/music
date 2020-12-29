@@ -4,22 +4,22 @@
       circle 
       size="mini"
       plain
+      @click="back"
     >
       <Icon
         :size="12"
         type="back"
-        @click="back"
       />
     </el-button>
     <el-button 
       circle 
       size="mini"
       plain
+      @click="forward"
     >
       <Icon 
         :size="12"
         type="forward"
-        @click="forward"
       />
     </el-button>
   </div>
