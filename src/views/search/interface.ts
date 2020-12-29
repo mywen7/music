@@ -14,13 +14,13 @@ export interface Song {
   album?: Nomal;
 }
 export interface SongSection {
-  title: string;
+  title: TypeEnum;
   type: string;
   content: Song[];
 }
 
 export enum TypeEnum {
-  单曲 = 'songs', 歌单 = 'playlists',
-  MV = 'mvs', 歌手 = 'artists',
-  专辑 = 'albums',
+  song = '单曲', playlist = '歌单',
+  mv = 'MV', artist = '歌手',
+  album = '专辑',
 }

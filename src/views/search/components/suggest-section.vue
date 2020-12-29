@@ -18,12 +18,12 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { Song } from '../interface';
+import { Song, TypeEnum } from '../interface';
 
 export default defineComponent ({
   props: {
     title: {
-      type: String,
+      type: String as PropType<TypeEnum>,
       default: '单曲',
     },
     type: {

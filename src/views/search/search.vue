@@ -74,27 +74,27 @@ function useSuggestSection(toSearch: (name: string, type: string) => void) {
       const suggest = res.result;
       suggestList.value = [
         {
-          title: '单曲',
+          title: TypeEnum.song,
           type: 'music',
           content: transforSong(suggest.songs),
         },
         {
-          title: '歌单',
+          title: TypeEnum.playlist,
           type: 'playlist',
           content: transforSong(suggest.playlists),
         },
         {
-          title: 'mv',
+          title: TypeEnum.mv,
           type: 'mv',
           content: transforSong(suggest.mvs),
         },
         {
-          title: '歌手',
+          title: TypeEnum.artist,
           type: 'yonghu',
           content: transforSong(suggest.artists),
         },
         {
-          title: '专辑',
+          title: TypeEnum.album,
           type: 'playlist-menu',
           content: transforSong(suggest.albums),
         },
