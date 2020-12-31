@@ -5,12 +5,7 @@
       <div class="desc">
         {{ cardInfo.desc }}
       </div>
-      <div class="play-icon">
-        <Icon 
-          :size="22"
-          type="play"
-        />
-      </div>
+      <PlayIcon class="play-icon"/>
     </div>
     <div class="title">{{ cardInfo.title }}</div>
   </div>
@@ -59,24 +54,20 @@ export default defineComponent ({
       font-size: $font-size-lg;
     }
     .play-icon {
-      display: inline-block;
-      @include round(36px);
       opacity: 0;
-      background-color: #e9e9e9;
       position: absolute;
       bottom: 8px;
       right: 8px;
+      font-size: 24px;
       transition: $transition;
-      color: $red;
-      line-height: 36px;
-      text-align: center;
+      color: $white;
     }
     &:hover {
       .desc {
         transform: translateY(0);
       }
       .play-icon {
-        opacity: 0.7;
+        opacity: 1;
       }
     }
   }
