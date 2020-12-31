@@ -2,15 +2,15 @@
   <div class="discovery">
     <Suspense>
       <template #default>
-        <banner/>
+        <div>
+          <banner/>
+          <suggest-playlist/>
+        </div>
       </template>
       <template #fallback>
         <div></div>
       </template>
     </Suspense>
-    <Wrap title="最新歌单">
-      <playlist-card />
-    </Wrap>
   </div>
 </template>
 
@@ -18,11 +18,13 @@
 import { defineComponent } from 'vue';
 import Banner from './banner.vue';
 import PlaylistCard from './components/playlist-card.vue';
+import SuggestPlaylist from './suggest-playlist.vue';
 
 export default defineComponent ({
   components: {
     Banner,
     PlaylistCard,
+    SuggestPlaylist,
   },
 });
 </script>

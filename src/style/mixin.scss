@@ -1,3 +1,9 @@
+@mixin text-ellipsis() {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 @mixin round($d) {
   width: $d;
   height: $d;

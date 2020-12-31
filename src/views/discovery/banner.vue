@@ -27,7 +27,12 @@ export default defineComponent ({
     const res = await http('/banner', {
       method: 'GET',
     })
-    banners.value = res.banners.map((ele: any) => ele);
+    banners.value = res.banners.map((ele: any) => {
+      return {
+        imageUrl: ele.imageUrl,
+        url: ele.url,
+      }
+    });
     return {
       banners,
       onClick,
