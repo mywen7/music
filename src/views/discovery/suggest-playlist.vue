@@ -57,6 +57,5 @@ export default defineComponent ({
 .play-wrap {
   display: grid;
   grid-template-columns: repeat(5, 20%);
-  column-gap: 20px;
 }
 </style>

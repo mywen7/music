@@ -19,5 +19,7 @@ export default defineComponent ({
 <style lang="scss" scoped>
 .m-title {
   padding: 20px 0;
+  font-size: 30px;
+  white-space:nowrap;
 }
 </style>
