@@ -1,5 +1,5 @@
 <template>
-  <div class="song-card">
+  <div class="song-card" @click="$emit('cardClick', cardInfo.id)">
     <div class="img-wrap">
       <img class="card-img" :src="cardInfo.img"/>
       <PlayIcon class="play-icon"/>

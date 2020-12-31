@@ -5,6 +5,7 @@
         v-for="(cardInfo, index) in cardInfoList"
         :key="index"
         :card-info="cardInfo"
+        @card-click="cardClick"
       />
     </div>
   </Wrap>
@@ -37,8 +38,17 @@ export default defineComponent ({
         artist: ele.song.artists[0].name,
       }
     })
+    const cardClick = (id: number) => {
+      router.push({
+        name: 'song',
+        query: {
+          id,
+        }
+      })
+    }
     return {
       cardInfoList,
+      cardClick,
     }
   }
 });
