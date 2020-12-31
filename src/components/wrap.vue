@@ -20,6 +20,7 @@ export default defineComponent ({
 .m-title {
   padding: 20px 0;
   font-size: 30px;
+  margin-bottom: 20px;
   white-space:nowrap;
 }
 </style>

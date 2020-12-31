@@ -24,7 +24,7 @@ export default defineComponent ({
 
 <style lang="scss" scoped>
 .playlist {
-  margin: 20px;
+  margin: 0 20px;
   margin-bottom: 16px;
   .img-wrap {
     width: 100%;

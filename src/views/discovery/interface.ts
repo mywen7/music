@@ -9,8 +9,9 @@ export interface Playlist {
   title: string;
 }
 
-export type PlayListCard = keyof Playlist;
-
-export type PlaylistCardUncertain =  {
-  [key in PlayListCard]?: Playlist[key]
+export interface Song {
+  id: number;
+  artist: string;
+  name: string;
+  img: string;
 }
