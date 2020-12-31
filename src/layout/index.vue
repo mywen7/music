@@ -7,7 +7,7 @@
       <el-aside width="240px">
         <sidebar />
       </el-aside>
-      <el-main>
+      <el-main class="m-main">
         <router-view />
       </el-main>
     </el-container>
@@ -31,3 +31,8 @@ export default defineComponent ({
   },
 });
 </script>
+<style lang="scss" scoped>
+.m-main {
+  height: calc(100vh - #{$header-height} * 2);
+}
+</style>
