@@ -15,3 +15,11 @@ export interface Song {
   name: string;
   img: string;
 }
+
+export interface MV {
+  id: number;
+  name: string;
+  artist: string;
+  img: string;
+  playCount: number;
+}

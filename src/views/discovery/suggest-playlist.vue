@@ -1,5 +1,5 @@
 <template>
-  <Wrap title="最新歌单" v-if="cardInfoList.length > 0">
+  <Wrap title="最新歌单">
     <div class="play-wrap">
       <playlist-card 
         v-for="(cardInfo, index) in cardInfoList"

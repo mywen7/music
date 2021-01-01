@@ -6,6 +6,7 @@
           <banner/>
           <suggest-playlist/>
           <suggest-song/>
+          <suggest-mv/>
         </div>
       </template>
       <template #fallback>
@@ -19,6 +20,7 @@
 import { defineComponent } from 'vue';
 import Banner from './banner.vue';
 import PlaylistCard from './components/playlist-card.vue';
+import SuggestMv from './suggest-mv.vue';
 import SuggestPlaylist from './suggest-playlist.vue';
 import SuggestSong from './suggest-song.vue';
 
@@ -28,6 +30,7 @@ export default defineComponent ({
     PlaylistCard,
     SuggestPlaylist,
     SuggestSong,
+    SuggestMv,
   },
 });
 </script>

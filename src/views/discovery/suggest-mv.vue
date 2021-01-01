@@ -1,7 +1,7 @@
 <template>
-  <Wrap title="最新音乐">
-    <div class="song-card">
-      <song-card 
+  <Wrap title="最新MV">
+    <div class="mv-wrap">
+      <mv-card 
         v-for="(cardInfo, index) in cardInfoList"
         :key="index"
         :card-info="cardInfo"
@@ -12,55 +12,49 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, Ref } from 'vue';
-import songCard from './components/song-card.vue';
-import { useRouter } from 'vue-router';
-import { Song } from './interface';
 import http from '@/libs/fetch';
-
+import { defineComponent, Ref, ref } from 'vue';
+import { useRouter } from 'vue-router';
+import mvCard from './components/mv-card.vue';
+import { MV } from './interface';
 
 export default defineComponent ({
-  components: { songCard },
+  components: { mvCard },
   async setup() {
     const router = useRouter();
-    const cardInfoList: Ref<Song[]> = ref([]);
-    const res = await http('/personalized/newsong', {
+    const cardInfoList: Ref<MV[]> = ref([]);
+    const res = await http('/personalized/mv', {
       method: 'GET',
-      query: {
-        limit: 9,
-      },
-    })
+    });
     cardInfoList.value = res.result.map((ele: any) => {
       return {
-        name: ele.name,
         id: ele.id,
+        name: ele.name,
+        playCount: ele.playCount,
+        artist: ele.artistName,
         img: ele.picUrl,
-        artist: ele.song.artists[0].name,
-      }
-    })
+      };
+    });
     const cardClick = (id: number) => {
       router.push({
-        name: 'song',
+        name: 'mv',
         query: {
           id,
         }
       })
     }
     return {
-      cardInfoList,
       cardClick,
+      cardInfoList,
     }
   }
-});
+})
 </script>
-
 <style lang="scss" scoped>
-.song-card {
-  display: grid;
-  grid-template-columns: repeat(3, 31%);
-  column-gap: 20px;
-  row-gap: 30px;
+.mv-wrap {
+  display:grid;
+  grid-template-columns: repeat(3,31%);
+  column-gap: 30px;
   justify-content: center;
-  margin-bottom: 20px;
 }
 </style>
