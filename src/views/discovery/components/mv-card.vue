@@ -26,11 +26,7 @@ export default defineComponent ({
     position: relative;
     padding-top: 55%;
     .img {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      @include abs-stretch;
       width: 100%;
       height: 100%;
     }
@@ -42,7 +38,7 @@ export default defineComponent ({
       color: $white;
     }
     .play-icon {
-      @include abs-center();
+      @include abs-center;
     }
   }
   .desc {

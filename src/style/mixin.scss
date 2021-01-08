@@ -3,7 +3,13 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
+@mixin text-ellipsis-multi($line) {
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: $line;
+  -webkit-box-orient: vertical;
+}
 @mixin round($d) {
   width: $d;
   height: $d;
@@ -27,4 +33,12 @@
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+}
+
+@mixin abs-stretch {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  top: 0;
+  right: 0;
 }

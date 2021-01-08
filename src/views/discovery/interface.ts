@@ -9,6 +9,11 @@ export interface Playlist {
   title: string;
 }
 
+export type PlaylistKey = keyof Playlist;
+
+export type PlaylistUncertain = {
+  [key in PlaylistKey]?: Playlist[key];
+}
 export interface Song {
   id: number;
   artist: string;

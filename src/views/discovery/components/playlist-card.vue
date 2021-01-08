@@ -32,26 +32,23 @@ export default defineComponent ({
     padding-top: 100%;
     overflow: hidden;
     .img {
-      position: absolute;
-      right: 0;
-      top: 0;
-      bottom: 0;
-      left: 0;
+      @include abs-stretch;
       height: 100%;
       width: 100%;
     }
     .desc {
       cursor: default;
-      padding: 6px;
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
+      padding: 6px 6px 4px 6px;
       background-color:  rgba(0, 0, 0, 0.4);
       transform: translateY(-100%);
       transition: $transition;
       color: $white;
       font-size: $font-size-lg;
+      @include text-ellipsis-multi(3);
     }
     .play-icon {
       opacity: 0;

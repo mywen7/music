@@ -34,15 +34,11 @@ export default defineComponent ({
       border-radius: 12px;
       width: 100%;
       height: 100%;
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      @include abs-stretch;
     }
     .play-icon {
       opacity: 0;
-      @include abs-center();
+      @include abs-center;
     }
     &:hover {
       .play-icon {
