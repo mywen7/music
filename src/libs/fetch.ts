@@ -10,7 +10,7 @@ interface HttpModel {
 }
 async function http(api: string, option: HttpModel) {
   const method = `${option.method}`;
-  let url = 'http://localhost:3000/' + api.replace(/^\//, '');
+  let url = '/api/' + api.replace(/^\//, '');
 
   if (method === 'GET') {
     const queryString = qs.stringify(option.query);

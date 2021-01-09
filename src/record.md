@@ -3,3 +3,4 @@
 2、全局改写的element样式放入main.ts文件中，全局应用，全局使用的css样式在vue.config配置中配置。
 3、全局components中的组件已在main.ts文件中全局注册过，写时不需要再引入注册。
 4、fetch调用接口时，记得启动服务器：NeteaseCloudMusicApi文件。
+5、解决跨域问题：使用反向代理，在vue.config.ts文件中配置了proxy。明明写了pathRewrite，但是就是还存在/api
