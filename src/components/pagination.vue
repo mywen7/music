@@ -36,5 +36,7 @@ export default defineComponent ({
 </script>
 
 <style lang="scss" scoped>
-
+.el-pagination {
+  text-align: right;
+}
 </style>
