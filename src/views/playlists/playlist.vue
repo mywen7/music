@@ -1,141 +1,115 @@
 <template>
   <div class="m-playlist">
-    <card v-if="cardInfo.id" 
-      :card-info="cardInfo"
-      @card-click="cardClick"
-    />
-    <div class="tags">
-      <el-button 
-        v-for="(tag,index) in tags"
-        :key="index"
-        type="text"
-        @click="tagChange(tag)"
-      >
-        {{tag}}
-      </el-button>
-    </div>
-    <div class="playlist-wrap">
-      <playlist-card
-        v-for="playlist in playlists"
-        :key="playlist.id"
-        :card-info="playlist"
-        @card-click="cardClick"
-      />
-    </div>
-    <el-pagination
-      :page-size="pageSize"
-      layout="prev, pager, next"
-      :total="total"
-      :current-page="currentPage"
-      @current-change="onPageChange"
-    ></el-pagination>
+    <Pagination :page-props="pageProps">
+      <template #banner v-if="cardInfo.id">
+        <card  
+          :card-info="cardInfo"
+          @card-click="cardClick"
+        />
+      </template>
+      <template #action>
+        <div class="tags">
+          <el-button 
+            v-for="(tag,index) in tags"
+            :key="index"
+            type="text"
+            @click="tagChange(tag)"
+          >
+            {{tag}}
+          </el-button>
+        </div>
+      </template>
+      <div class="playlist-wrap">
+        <playlist-card
+          v-for="playlist in playlists"
+          :key="playlist.id"
+          :card-info="playlist"
+          @card-click="cardClick"
+        />
+      </div>
+    </Pagination>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, Ref, reactive } from 'vue';
+import { defineComponent, ref, Ref, reactive, onMounted } from 'vue';
 import Card from './components/card.vue';
 import { PlaylistUncertain, Playlist } from '../discovery/interface';
 import http from '@/libs/fetch';
 import PlaylistCard from '../discovery/components/playlist-card.vue';
 import { useRouter } from 'vue-router';
+import usePage from '../../components/usePagination';
 
+function transforPlaylist(data: any) {
+  return {
+    id: data.id,
+    title: data.name,
+    desc: data.description,
+    img: data.coverImgUrl,
+  };
+};
 
-function useFetchPlaylist() {
-    const cardInfo: Ref<PlaylistUncertain> = ref({});
-    const pageSize = ref(50);
-    const currentPage = ref(1);
-    const highquality = async (tag: string) => {
+async function useFetchPlaylist() {
+  const pageProps = usePage<Playlist>(async ({page, size, tag}) => {
+    const res = await http('top/playlist', {
+        method: 'GET',
+        query: {
+          limit: size,
+          offset: (page - 1) * size,
+          cat: tag,
+        },
+      })
+    return {
+      items: res.playlists.map(transforPlaylist),
+      total: res.total,
+    };
+  });
+
+  const cardInfo: Ref<PlaylistUncertain> = ref({});
+  const highquality = async () => {
+    try {
       const res = await http('/top/playlist/highquality', {
         method: 'GET',
         query: {
-          cat: tag,
+          cat: pageProps.tag.value,
           limit: 1,
         },
       })
       const data = res.playlists[0];
-      if (data) {
-        cardInfo.value = {
-          id: data.id,
-          title: data.name,
-          desc: data.description,
-          img: data.coverImgUrl,
-        }
-      } else {
-        cardInfo.value = {}
-      }
+      cardInfo.value = transforPlaylist(data);
+    } catch (e) {
+      cardInfo.value = {};
+      console.log('error in highquality')
     }
-    const playlists: Ref<Playlist[]> = ref([]);
-    const total = ref(null);
-    const fetchPlaylist = async (offset: number, tag: string, limit: number) => {
-      const res = await http('top/playlist', {
-        method: 'GET',
-        query: {
-          limit,
-          offset,
-          cat: tag,
-        },
-      })
-      if (res.playlists.length > 0) {
-        total.value = res.total;
-        playlists.value = res.playlists.map((ele: any) => {
-          return {
-            id: ele.id,
-            img: ele.coverImgUrl,
-            desc: ele.description,
-            title: ele.name,
-          }
-        })
-      }
-    }
-    return { pageSize, currentPage, cardInfo, highquality, fetchPlaylist, playlists, total};
+  }
+  await highquality();
+  return { pageProps, highquality, cardInfo };
 }
 
-function useChangeTag(
-  highquality: (tag: string) => void,
-  fetchPlaylist: (offset: number, tag: string, pageSize: number) => void,
-  pageSize: Ref<number>,
-  currentPage: Ref<number>,
-  ) {
-  const currentTag = ref('全部');
+function useChangeTag( highquality: () => void, tag: Ref<string> ) {
   const tags = reactive([
     '全部', '华语', '欧美', '民谣', '说唱',
     '爵士', '流行', '电子', '古风', '影视原声', '浪漫',
     '治愈', '孤独', '安静',
   ]);
 
-  const tagChange = async (tag: string) => {
-    await highquality(tag);
-    await fetchPlaylist(0, tag, pageSize.value);
-    currentPage.value = 1;
+  const tagChange = async (currentTag: string) => {
+    if (tag.value === currentTag) {
+      return ;
+    }
+    tag.value = currentTag;
+    await highquality();
   }
-  return {
-    tagChange, tags, currentTag,
-  }
+  return { tagChange, tags }
 }
 
-function useChangePage(
-  fetchPlaylist: (offset: number, tag: string, pageSize: number) => void,
-  pageSize: Ref<number>,
-  currentTag: Ref<string>,
-  ) {
 
-  const onPageChange = async (page: number) => {
-    await fetchPlaylist(((page - 1) * pageSize.value), currentTag.value, pageSize.value);
-  }
-  return {
-    onPageChange,
-  }
-}
 export default defineComponent ({
   components: { Card, PlaylistCard },
   async setup() {
     const router = useRouter();
-    const { currentPage, cardInfo, highquality, fetchPlaylist, playlists, total, pageSize } = useFetchPlaylist();
-    const { tagChange, tags, currentTag } = useChangeTag(highquality, fetchPlaylist, pageSize, currentPage);
-    const { onPageChange } = useChangePage(fetchPlaylist, pageSize, currentTag);
-    await highquality(currentTag.value);
-    await fetchPlaylist(0, currentTag.value, pageSize.value);
+    const { pageProps, highquality, cardInfo } = await useFetchPlaylist();
+    const { tagChange, tags } = useChangeTag(highquality, pageProps.tag);
     const cardClick = (id: number) => {
       router.push({
         name: 'playlist',
@@ -148,11 +122,9 @@ export default defineComponent ({
       tags,
       cardInfo,
       tagChange,
-      playlists,
+      playlists: pageProps.items,
       cardClick,
-      total,
-      pageSize,
-      onPageChange,
+      pageProps,
     }
   },
 });
