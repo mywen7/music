@@ -144,6 +144,10 @@ export default defineComponent ({
     display: grid;
     grid-template-columns: repeat(5,20%);
     justify-content: center;
+    row-gap: 40px;
+    :deep(.img-wrap) {
+      border-radius: 5px;
+    }
   }
 }
 </style>
