@@ -1,18 +1,13 @@
 <template>
   <div class="discovery">
-    <Suspense>
-      <template #default>
-        <div>
-          <banner/>
-          <suggest-playlist/>
-          <suggest-song/>
-          <suggest-mv/>
-        </div>
-      </template>
-      <template #fallback>
-        <div></div>
-      </template>
-    </Suspense>
+    <AsyncComponent>
+      <div>
+        <banner/>
+        <suggest-playlist/>
+        <suggest-song/>
+        <suggest-mv/>
+      </div>
+    </AsyncComponent>
   </div>
 </template>
 

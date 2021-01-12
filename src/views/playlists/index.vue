@@ -1,12 +1,7 @@
 <template>
-  <Suspense>
-    <template #default>
-      <playlist/>
-    </template>
-    <template #fallback>
-      <div></div>
-    </template>
-  </Suspense>
+  <AsyncComponent>
+    <playlist/>
+  </AsyncComponent>
 </template>
 
 <script lang="ts">
