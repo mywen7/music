@@ -4,8 +4,8 @@
     <slot name="action"/>
     <slot/>
     <el-pagination
-      :pageSize="size"
-      :current-page.sync="page"
+      :page-size="size"
+      :current-page="page"
       @current-change="onPageChange"
       :total="total"
       layout="prev, pager, next"
