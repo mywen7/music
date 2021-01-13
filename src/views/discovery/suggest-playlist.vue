@@ -16,20 +16,15 @@ import { defineComponent, ref, Ref, nextTick } from 'vue';
 import playlistCard from './components/playlist-card.vue';
 import http from '@/libs/fetch';
 import { Playlist } from './interface';
-import { useRouter } from 'vue-router';
+import { RouterPush } from '../router';
 
 export default defineComponent ({
   components: { playlistCard },
   async setup() {
     const cardInfoList: Ref<Playlist[]> = ref([]);
-    const router = useRouter();
+    const { routerPush } = RouterPush();
     const cardClick = (id: number) => {
-      router.push({
-        name: 'playlist',
-        query: {
-          id,
-        },
-      });
+      routerPush('playlist', id);
     }
     const res = await http('/personalized', {
       method: 'GET',

@@ -28,8 +28,8 @@ import Card from './components/card.vue';
 import { PlaylistUncertain, Playlist } from '../discovery/interface';
 import http from '@/libs/fetch';
 import PlaylistCard from '../discovery/components/playlist-card.vue';
-import { useRouter } from 'vue-router';
 import usePage from '../../components/usePagination';
+import { RouterPush } from '../router';
 
 function transforPlaylist(data: any) {
   return {
@@ -98,16 +98,11 @@ function useChangeTag( highquality: () => void, tag: Ref<string> ) {
 export default defineComponent ({
   components: { Card, PlaylistCard },
   async setup() {
-    const router = useRouter();
+    const { routerPush } = RouterPush();
     const { pageProps, highquality, cardInfo } = await useFetchPlaylist();
     const { tagChange, tags } = useChangeTag(highquality, pageProps.tag);
     const cardClick = (id: number) => {
-      router.push({
-        name: 'playlist',
-        query: {
-          id,
-        },
-      })
+      routerPush('playlist', id)
     }
     return {
       tags,

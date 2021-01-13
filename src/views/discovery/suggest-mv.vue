@@ -14,14 +14,14 @@
 <script lang="ts">
 import http from '@/libs/fetch';
 import { defineComponent, Ref, ref } from 'vue';
-import { useRouter } from 'vue-router';
 import mvCard from './components/mv-card.vue';
 import { MV } from './interface';
+import { RouterPush } from '../router';
 
 export default defineComponent ({
   components: { mvCard },
   async setup() {
-    const router = useRouter();
+    const { routerPush } = RouterPush();
     const cardInfoList: Ref<MV[]> = ref([]);
     const res = await http('/personalized/mv', {
       method: 'GET',
@@ -36,12 +36,7 @@ export default defineComponent ({
       };
     });
     const cardClick = (id: number) => {
-      router.push({
-        name: 'mv',
-        query: {
-          id,
-        }
-      })
+      routerPush('mv', id);
     }
     return {
       cardClick,

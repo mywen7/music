@@ -14,7 +14,7 @@
 <script lang="ts">
 import { defineComponent, ref, Ref } from 'vue';
 import songCard from './components/song-card.vue';
-import { useRouter } from 'vue-router';
+import { RouterPush } from '../router';
 import { Song } from './interface';
 import http from '@/libs/fetch';
 
@@ -22,7 +22,7 @@ import http from '@/libs/fetch';
 export default defineComponent ({
   components: { songCard },
   async setup() {
-    const router = useRouter();
+    const { routerPush } = RouterPush()
     const cardInfoList: Ref<Song[]> = ref([]);
     const res = await http('/personalized/newsong', {
       method: 'GET',
@@ -39,12 +39,7 @@ export default defineComponent ({
       }
     })
     const cardClick = (id: number) => {
-      router.push({
-        name: 'song',
-        query: {
-          id,
-        }
-      })
+      routerPush('song', id);
     }
     return {
       cardInfoList,

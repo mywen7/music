@@ -44,6 +44,7 @@ import SuggestSection from './components/suggest-section.vue';
 import { PanelInfo, SongSection, Song, NomalType } from './interface';
 import http from '../../libs/fetch';
 import { useRouter } from 'vue-router';
+import { RouterPush } from '../router';
 import { recentSearch, recentSearchFn } from './helper';
 
 const transforSong = (data: any) => {
@@ -103,13 +104,9 @@ function useSuggestSection() {
     }
   }
   const router = useRouter();
+  const { routerPush } = RouterPush();
   const suggestSearch = (event: NomalType) => {
-    router.push({
-      name: event.type,
-      query: {
-        id: event.id,
-      },
-    })
+    routerPush(event.type, event.id)
   }
   const searchChange = () => {
     recentSearchFn.add(searchKey.value);

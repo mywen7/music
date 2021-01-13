@@ -3,6 +3,7 @@
     class="iconfont icon-component"
     :class="iconClass"
     :style="iconStyle"
+    @click.stop="$emit('icon-click')"
   />
 </template>
 <script lang="ts">
