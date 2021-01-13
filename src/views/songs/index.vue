@@ -1,7 +1,7 @@
 <template>
   <div class="songs">
     <Tags :tags="tags" @tag-change="tagChange"/>
-    <el-table :data="songList" @row-click="rowClick" :load="tableLoad">
+    <el-table :data="songList" @row-click="rowClick">
       <el-table-column type="index" :index="indexMethod"></el-table-column>
       <el-table-column>
         <template #default="scope">
@@ -101,10 +101,7 @@ function useTagChange(songType: Ref<number>) {
   return { tags, tagChange }
 }
 
-function useTable(songLength: number) {
-  const tableLoad = () => {
-    return songLength && songLength > 0;
-  }
+function useTable() {
   const indexMethod = (index: number) => {
     return (index).toString().padStart(2, '0');
   }
@@ -115,7 +112,7 @@ function useTable(songLength: number) {
   const rowClick = (row: any) => {
     routerPush('song', row.id);
   }
-  return { indexMethod, goMv, rowClick, tableLoad }
+  return { indexMethod, goMv, rowClick }
 }
 export default defineComponent ({
   components: { SongCard },
@@ -123,7 +120,7 @@ export default defineComponent ({
   setup() {
     const { songType, songList } = useFetchData();
     const { tags, tagChange } = useTagChange(songType);
-    const { indexMethod, goMv, rowClick, tableLoad } = useTable(songList.value.length);
+    const { indexMethod, goMv, rowClick } = useTable();
     return {
       tags,
       tagChange,
@@ -131,7 +128,6 @@ export default defineComponent ({
       indexMethod,
       goMv,
       rowClick,
-      tableLoad,
     }
   }
 });
