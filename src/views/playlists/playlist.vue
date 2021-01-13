@@ -8,16 +8,7 @@
         />
       </template>
       <template #action>
-        <div class="tags">
-          <el-button 
-            v-for="(tag,index) in tags"
-            :key="index"
-            type="text"
-            @click="tagChange(tag)"
-          >
-            {{tag}}
-          </el-button>
-        </div>
+        <Tags :tags="tags" @tag-change="tagChange"/>
       </template>
       <div class="playlist-wrap">
         <playlist-card
@@ -133,13 +124,6 @@ export default defineComponent ({
 <style lang="scss" scoped>
 .m-playlist {
   margin: 0 150px;
-  .tags {
-    text-align: right;
-    margin: 10px 0 20px 0;
-    .el-button--text {
-      color: $theme-color;
-    }
-  }
   .playlist-wrap {
     display: grid;
     grid-template-columns: repeat(5,20%);
