@@ -6,13 +6,13 @@
     </div>
     <div class="name-text">
       {{name}}
-      <Icon
-        v-if="mvId"
-        class="mv-icon"
-        @icon-click="$emit('go-mv', mvId)"
-        type="mv"
-        :size="20"
-      />
+      <span class="mv-icon" @click.stop="$emit('go-mv', mvId)">
+        <Icon
+          v-if="mvId"
+          type="mv"
+          :size="20"
+        />
+      </span>
     </div>
   </div>
 </template>
@@ -38,7 +38,7 @@ export default defineComponent ({
 <style lang="scss" scoped>
 .song-name {
   display: grid;
-  grid-template-columns: 20% 80%;
+  grid-template-columns: 20% 80% ;
   align-items: center;
   column-gap: 12px;
   .img-wrap {
@@ -58,6 +58,9 @@ export default defineComponent ({
     .mv-icon {
       margin-left: 5px;
       color: $theme-color;
+      i {
+        vertical-align: middle;
+      }
     }
   }
 }
