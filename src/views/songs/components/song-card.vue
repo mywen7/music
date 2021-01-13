@@ -1,7 +1,7 @@
 <template>
   <div class="song-name">
     <div class="img-wrap">
-      <img class="card-img" :src="imgUrl"/>
+      <el-image :fit="cover" lazy :src="imgUrl"/>
       <PlayIcon class="play-icon"/>
     </div>
     <div class="name-text">
@@ -38,17 +38,15 @@ export default defineComponent ({
 <style lang="scss" scoped>
 .song-name {
   display: grid;
-  grid-template-columns: 20% 80% ;
+  grid-template-columns: 20% 80%;
   align-items: center;
   column-gap: 12px;
   .img-wrap {
     position: relative;
-    padding-top: 100%;
-    .card-img {
+    height: 90px;
+    width: 90px;
+    :deep(.el-image__inner) {
       border-radius: 12px;
-      width: 100%;
-      height: 100%;
-      @include abs-stretch;
     }
     .play-icon {
       @include abs-center;
