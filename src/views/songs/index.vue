@@ -101,7 +101,7 @@ function useTagChange(songType: Ref<number>) {
 
 function useTable() {
   const indexMethod = (index: number) => {
-    return (index).toString().padStart(2, '0');
+    return (index + 1).toString().padStart(2, '0');
   }
   const { routerPush } = RouterPush();
   const goMv = (id: number) => {
