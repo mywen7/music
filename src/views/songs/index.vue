@@ -15,16 +15,14 @@
       <el-table-column 
         label="歌手" 
         prop="artists"
-        :width="350"
         />
       <el-table-column 
         label="专辑" 
         prop="albumName"
-        :width="350"/>
+        />
       <el-table-column 
         label="时长" 
         prop="duration"
-        :width="100" 
         align="center"/>
     </el-table>
   </div>
