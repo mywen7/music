@@ -2,12 +2,26 @@
   <div class="songs">
     <Tags :tags="tags" @tag-change="tagChange"/>
     <el-table :data="songList" @row-click="rowClick">
-      <el-table-column type="index" :index="indexMethod"></el-table-column>
-      <el-table-column>
+      <el-table-column 
+        :width="70" 
+        align="center"
+        type="index" 
+        :index="indexMethod"/>
+      <el-table-column :width="100">
+        <template #default="scope">
+          <div class="img-wrap">
+            <el-image 
+              fit="cover" 
+              lazy 
+              :src="scope.row.imgUrl"/>
+            <PlayIcon class="play-icon"/>
+          </div>
+        </template>
+      </el-table-column>
+      <el-table-column label="歌曲名">
         <template #default="scope">
           <song-card 
-            :img-url="scope.row.imgUrl"
-            :name="scope.row.name"
+            :name="scope.row.name" 
             :mv-id="scope.row.mvId"
             @go-mv="goMv"/>
         </template>
@@ -23,7 +37,8 @@
       <el-table-column 
         label="时长" 
         prop="duration"
-        align="center"/>
+        :width="100"
+        />
     </el-table>
   </div>
 </template>
@@ -144,8 +159,27 @@ export default defineComponent ({
   :deep(.el-table td, .el-table th.is-leaf) {
     border-bottom: none;
   }
+  :deep(.el-table td) {
+    padding:5px 0;
+  }
   :deep(.el-table th.is-leaf) {
     border-bottom: none;
+  }
+  .img-wrap {
+    height: 80px;
+    width: 80px;
+    flex-shrink: 0;
+    position: relative;
+    :deep(.el-image) {
+      position: static;
+    };
+    :deep(.el-image__inner) {
+      border-radius: 4px;
+      @include abs-stretch;
+    };
+    .play-icon {
+      @include abs-center;
+    }
   }
 }
 </style>
