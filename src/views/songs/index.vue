@@ -161,6 +161,7 @@ export default defineComponent ({
   }
   :deep(.el-table td) {
     padding:5px 0;
+    cursor: default;
   }
   :deep(.el-table th.is-leaf) {
     border-bottom: none;

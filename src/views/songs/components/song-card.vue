@@ -31,6 +31,7 @@ export default defineComponent ({
   align-items: center;
   margin-left: 5px;
   .mv-icon {
+    cursor: pointer;
     margin-left: 5px;
     color: $theme-color;
     i {
