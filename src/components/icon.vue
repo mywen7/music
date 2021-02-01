@@ -24,12 +24,8 @@ export default defineComponent ({
     },
     type: String,
     color: String,
-    backdrop: {
-      type: Boolean,
-      default: false,
-    },
   },
-  setup(props, { emit }) {
+  setup(props) {
 
     const iconClass = computed(() => {
       let className = `icon-${props.type}`;
@@ -50,20 +46,23 @@ export default defineComponent ({
       return refStyle;
     });
 
-    const onClick = () => {
-      emit('click')
-    };
-
-    const backDropSize = computed(() => {
-      const backDropSizeRatio = 1.56;
-      return toRem(backDropSizeRatio * props.size)
-    });
     return {
       iconClass,
-      onClick,
       iconStyle,
-      backDropSize,
     }
   },
 })
 </script>
+<style lang="scss" scoped>
+.icon-color {
+  &-theme {
+    color: $theme-color;
+  }
+  &-white {
+    color: $white;
+  }
+  &-shallow {
+    color: var(--font-color-shallow-grey);
+  }
+}
+</style>

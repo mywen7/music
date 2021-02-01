@@ -1,20 +1,23 @@
 <template>
-  <div class="my-footer">
-    <player/>
+  <div class="my-player">
+    <music-info/>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import Player from '../player/index.vue';
+import musicInfo from './components/song-info.vue';
 
 export default defineComponent ({
-  components: { Player },
+  components: { musicInfo },
+
 });
 </script>
 
 <style lang="scss" scoped>
-.my-footer {
+.my-player {
   height: $header-height;
+  display: grid;
+  align-items: center;
 }
 </style>
