@@ -5,8 +5,8 @@
       <div class="play-count">播放量：{{cardInfo.playCount}}</div>
       <PlayIcon :size="50" class="play-icon"/>
     </div>
-    <div class="desc">{{ cardInfo.name }}</div>
-    <div class="desc">{{ cardInfo.artist }}</div>
+    <div class="desc name">{{ cardInfo.name }}</div>
+    <div class="desc artist">{{ cardInfo.artist }}</div>
   </div>
 </template>
 
@@ -36,17 +36,29 @@ export default defineComponent ({
       top: 10px;
       right: 10px;
       color: $white;
+      font-size: $font-size-sm;
     }
     .play-icon {
       @include abs-center;
+      opacity: 0;
     }
   }
   .desc {
-    margin: 10px 0;
     @include text-ellipsis();
+    &.name {
+      margin-top: 5px;
+      font-size: $font-size-sm;
+    }
+    &.artist {
+      font-size: $font-size-sm;
+      color: #BEBEBE;
+    }
   }
   &:hover {
     .play-count {
+      opacity: 1;
+    }
+    .play-icon {
       opacity: 1;
     }
   }

@@ -48,7 +48,7 @@ export default defineComponent ({
 <style lang="scss" scoped>
 .mv-wrap {
   display:grid;
-  grid-template-columns: repeat(3,31%);
+  grid-template-columns: repeat(4,24%);
   column-gap: 30px;
   justify-content: center;
 }

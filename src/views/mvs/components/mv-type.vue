@@ -33,34 +33,19 @@
 import { defineComponent, ref, reactive } from 'vue';
 
 export default defineComponent ({
+  props: {
+    typeList: Array,
+    active: Array,
+  },
   setup(props, { emit }) {
-    const typeList = reactive([
-      {
-        type: '地区',
-        content: ['全部', '内地', '港台', '欧美', '日本', '韩国'],
-      },
-      {
-        type: '类型',
-        content: ['全部', '官方版', '原声', '现场版', '网易出品'],
-      },
-      {
-        type: '排序',
-        content: ['上升最快', '最热', '最新'],
-      },
-    ])
-    const active = reactive([
-      '全部',
-      '全部',
-      '上升最快',
-    ])
     const typeClick = (index: number, tag: string) => {
-      active[index] = tag;
-      emit('active-change', active);
+      emit('active-change', {
+        index,
+        tag,
+      });
     }
     return {
-      typeList,
       typeClick,
-      active,
     }
   }
 });
@@ -77,7 +62,7 @@ export default defineComponent ({
     display: inline-block;
     padding: 4px 15px;
     border-radius: 20px;
-    margin: 0 20px;
+    margin: 0 10px;
     &:hover {
       color: $theme-color;
       background-color: #ecf5ff;

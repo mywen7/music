@@ -1,4 +1,4 @@
-import { onMounted, ref, Ref, UnwrapRef, watch } from 'vue';
+import { onMounted, reactive, ref, Ref, UnwrapRef, watch } from 'vue';
 
 export { default as Pagination} from './pagination.vue';
 
@@ -9,14 +9,14 @@ interface Response<T> {
 interface Request {
   page: number;
   size: number;
-  tag: string;
+  tag: string[];
 }
 type Fetch<T> = (request: Request) => Promise<Response<T>>;
 
 export interface PageProps<T> {
   page: Ref<number>,
   size: Ref<number>,
-  tag: Ref<string>,
+  tag: Ref<string[]>,
   total: Ref<number>,
   onPageChange: (size: number) => void;
   items: Ref<UnwrapRef<T[]>>;
@@ -27,7 +27,7 @@ export interface PageProps<T> {
 export default function usePage<T>(fetch: Fetch<T>): PageProps<T> {
   const size = ref(50);
   const page = ref(1);
-  const tag = ref('全部');
+  const tag = ref(['全部']);
   const total = ref(0);
   const onPageChange = (_page: number) => {
     page.value = _page;
@@ -52,6 +52,8 @@ export default function usePage<T>(fetch: Fetch<T>): PageProps<T> {
     } else {
       page.value = 1;
     }
+  }, {
+    deep: true,
   });
   onMounted(fetchdata);
   return {

@@ -47,7 +47,7 @@ async function useFetchPlaylist() {
         query: {
           limit: size,
           offset: (page - 1) * size,
-          cat: tag,
+          cat: tag[0],
         },
       })
     return {
@@ -62,7 +62,7 @@ async function useFetchPlaylist() {
       const res = await http('/top/playlist/highquality', {
         method: 'GET',
         query: {
-          cat: pageProps.tag.value,
+          cat: pageProps.tag.value[0],
           limit: 1,
         },
       })
@@ -77,7 +77,7 @@ async function useFetchPlaylist() {
   return { pageProps, highquality, cardInfo };
 }
 
-function useChangeTag( highquality: () => void, tag: Ref<string> ) {
+function useChangeTag( highquality: () => void, tag: Ref<string[]> ) {
   const tags = reactive([
     '全部', '华语', '欧美', '民谣', '说唱',
     '爵士', '流行', '电子', '古风', '影视原声', '浪漫',
@@ -85,10 +85,10 @@ function useChangeTag( highquality: () => void, tag: Ref<string> ) {
   ]);
 
   const tagChange = async (currentTag: string) => {
-    if (tag.value === currentTag) {
+    if (tag.value[0] === currentTag) {
       return ;
     }
-    tag.value = currentTag;
+    tag.value[0] = currentTag;
     await highquality();
   }
   return { tagChange, tags }
