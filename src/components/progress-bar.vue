@@ -1,7 +1,7 @@
 <template>
   <div
     class="progress-bar"
-    id="progress-bar"
+    :id="`progress-bar-${idName}`"
     @mouseup="barMouseup"
     @click="progressClick"
   >
@@ -23,32 +23,38 @@
 <script lang="ts">
 import { defineComponent, computed, ref, watch } from 'vue';
 
-export const DEFAULT_VOLUME = 0.75;
-export const DEFAULT_KEY = '_volume_';
-
 export default defineComponent ({
   name: 'ProgressBar',
   props: {
-    isSilence: {
+    idName: {
+      type: String,
+      default: '',
+    },
+    isZero: {
       type: Boolean,
       default: false,
     },
+    defaultKey: String,
   },
   setup(props, { emit }) {
-    const moveX = ref(Number(localStorage.getItem(DEFAULT_KEY)) || DEFAULT_VOLUME);
+    const moveX = ref(Number(localStorage.getItem(props.defaultKey || '')) || 0);
     watch(moveX, () => {
-      localStorage.setItem(DEFAULT_KEY, moveX.value.toString());
-      emit('volume-change', moveX.value);
+      const width = progressWidth();
+      const percent = moveX.value / width;
+      emit('percent-change', isNaN(percent) ? 0 : percent);
     })
-    watch(() => props.isSilence, () => {
-      if (props.isSilence) {
+    watch(() => props.isZero, () => {
+      if (props.isZero) {
         moveX.value = 0;
       } else {
         moveX.value++;
       }
     })
-    const barDom = computed(() => document.getElementById('progress-bar'));
-    const offsetX = computed(() => barDom.value?.getBoundingClientRect().x || 0)
+    const barDom = computed(() => document.getElementById(`progress-bar-${props.idName}`));
+    const beginleft = computed(() => barDom.value?.getBoundingClientRect().x || 0);
+    const progressWidth = () => {
+      return barDom.value?.clientWidth || 0;
+    }
     const fullStyle = computed(() => {
       return {
         width: `${moveX.value}px`,
@@ -76,8 +82,9 @@ export default defineComponent ({
       isMouseEvent.value = false;
     }
     const progressClick = (ev: any) => {
-      const percent = ev.clientX - offsetX.value - 6
-      moveX.value = percent < 0 ? 0 : percent > 100 ? 100 : percent ;
+      const width = progressWidth();
+      const percent = ev.clientX - beginleft.value - 6
+      moveX.value = percent < 0 ? 0 : percent > width ? width : percent;
     }
     const barMouseup = () => {
       if (isMouseEvent.value) {
@@ -92,7 +99,7 @@ export default defineComponent ({
       barMouseup,
       progressClick,
     }
-  }
+  },
 });
 </script>
 
@@ -101,13 +108,14 @@ $height: 2px;
 .progress-bar {
   display: inline-block;
   height: 100%;
+  width: 100%;
   padding-bottom: 2px;
   .progress-banner {
     vertical-align: middle;
     display: inline-block;
     position: relative;
     height: $height;
-    width: 106px;
+    width: 100%;
     background-color: #ece6e6;
     .progress {
       height: $height;

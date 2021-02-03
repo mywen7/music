@@ -5,24 +5,29 @@
         :type="iconType"
       />
     </span>
-    <ProgressBar 
-      :is-silence="isSilence" 
-      @volume-change="volumeChange"
-    />
+    <div class="volume-progress">
+      <ProgressBar 
+        id-name="volume"
+        :is-zero="isSilence" 
+        :default-key="DEFAULT_KEY"
+        @percent-change="volumeChange"
+      />
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, computed, ref, watch } from 'vue';
-import { DEFAULT_KEY, DEFAULT_VOLUME } from '../components/progress-bar.vue';
 
+export const DEFAULT_VOLUME = 0.75;
+export const DEFAULT_KEY = '_volume_';
 
 export default defineComponent ({
   name: 'Volume',
   setup(props, {emit}) {
     const volume = ref(Number(localStorage.getItem(DEFAULT_KEY)) || DEFAULT_VOLUME);
     watch(volume, () => {
-      emit('volume-change', volume);
+      emit('volume-change', volume.value);
     })
     const isSilence = computed(() => volume.value === 0);
     const iconType = computed(() =>  isSilence.value ? 'silence' : 'horn');
@@ -31,6 +36,7 @@ export default defineComponent ({
     }
     const volumeChange = (event: number) => {
       volume.value = event;
+      localStorage.setItem(DEFAULT_KEY, event.toString());
     }
     return {
       volume,
@@ -38,6 +44,7 @@ export default defineComponent ({
       iconType,
       volumeChange,
       isSilence,
+      DEFAULT_KEY,
     }
   }
 });
@@ -49,6 +56,9 @@ export default defineComponent ({
   align-items: center;
   .type-icon {
     margin-right: 5px;
+  }
+  .volume-progress {
+    width: 120px;
   }
 }
 </style>

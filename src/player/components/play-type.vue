@@ -44,6 +44,8 @@
     </el-popover>
     <!-- 音量 -->
     <Volume @volume-change="volumeChange"/>
+    <!-- github -->
+    <Icon :size="18" type="github" @click="goGithub"/>
   </div>
 </template>
 
@@ -98,12 +100,16 @@ function useVolume() {
     volumeChange,
   }
 }
+
 export default defineComponent ({
   components: { Share, PlayQueue },
   setup() {
     const{ playModeMap, modeVisible, playingMode, modeClick, modeChange } = useMode();
     const { onPlaylistVisible, playlistVisible } = usePlaylist();
     const { volumeChange } = useVolume();
+    const goGithub = () => {
+      window.open('https://github.com/mywen7/music');
+    }
     return {
       playingMode,
       playModeMap,
@@ -113,6 +119,7 @@ export default defineComponent ({
       volumeChange,
       onPlaylistVisible,
       playlistVisible,
+      goGithub,
     }
   },
 });
@@ -123,8 +130,8 @@ export default defineComponent ({
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-left: 270px;
-  padding-right: 80px;
+  // padding-left: 270px;
+  // padding-right: 80px;
 }
 .mode-tooltip {
   padding: 0 10px;
