@@ -1,25 +1,34 @@
 <template>
   <div class="song">
-    <div class="img-wrap">
+    <div class="img-wrap" @click="$emit('img-click')">
       <img class="img" :src="imgUrl"/>
       <div class="icon-wrap">
         <Icon :size="24" :type="playControlIcon" color="white"/>
       </div>
     </div>
-    <div>
-      <div>{{name}}-{{artist}}</div>
-      <div>{{currentTime}}/{{duration}}</div>
+    <div class="song-detail">
+      <div>
+        {{name}}
+        -
+        {{artist}}
+      </div>
+      <div class="detail-time">
+        {{currentTime}}
+        /
+        {{duration}}
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, Ref, ref, computed } from 'vue';
+import { defineComponent, Ref, ref, computed, PropType } from 'vue';
 import { SongInfo } from '../interface';
 import { formatTime } from '../../libs/common';
 
 export default defineComponent ({
   props: {
+    currentSong: Object,
     isPlayerShow: {
       type: Boolean,
       default: false,
@@ -27,13 +36,7 @@ export default defineComponent ({
   },
   setup(props) {
     const playControlIcon = computed(() => props.isPlayerShow ? 'shrink' : 'open');
-    const currentSong: Ref<SongInfo> = ref({
-      name: '余额',
-      imgUrl: 'https://p3.music.126.net/oro9WEGcXWgFamaoe1EtuQ==/19242552997932998.jpg',
-      artist: '孙燕姿',
-      currentTime: 1191513600000,
-      duration: 1612155430797,
-    })
+    const currentSong = computed(() => props.currentSong as SongInfo);
     return {
       ...currentSong.value,
       currentTime: formatTime(currentSong.value.currentTime),
@@ -52,7 +55,7 @@ export default defineComponent ({
     position: relative;
      .icon-wrap {
       @include abs-center;
-      opacity: 0;
+      opacity: 0.5;
     }
     .img {
       height: 50px;
@@ -68,6 +71,14 @@ export default defineComponent ({
         transition: $transition;
         opacity: 1;
       }
+    }
+  }
+  .song-detail {
+    margin-left: 10px;
+    font-size: $font-size-sm;
+    @include text-ellipsis;
+    .detail-time {
+      color: #5c5c5c;
     }
   }
 }

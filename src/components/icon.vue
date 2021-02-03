@@ -61,8 +61,6 @@ export default defineComponent ({
   &-white {
     color: $white;
   }
-  &-shallow {
-    color: var(--font-color-shallow-grey);
-  }
+  
 }
 </style>

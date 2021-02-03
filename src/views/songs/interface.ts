@@ -3,7 +3,7 @@ export interface Song {
   name: string;
   albumName: string;
   duration: number;
-  imgUrl: string;
+  imgUrl?: string;
   artists: string;
   mvId: number;
 }
