@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref, watch } from 'vue';
+import { defineComponent, computed, ref, watch, onMounted } from 'vue';
 
 export default defineComponent ({
   name: 'ProgressBar',
@@ -37,7 +37,10 @@ export default defineComponent ({
     defaultKey: String,
   },
   setup(props, { emit }) {
-    const moveX = ref(Number(localStorage.getItem(props.defaultKey || '')) || 0);
+    const moveX = ref(0);
+    onMounted(() => {
+      moveX.value = Number(localStorage.getItem(props.defaultKey || '')) * progressWidth();
+    })
     watch(moveX, () => {
       const width = progressWidth();
       const percent = moveX.value / width;
@@ -51,7 +54,9 @@ export default defineComponent ({
       }
     })
     const barDom = computed(() => document.getElementById(`progress-bar-${props.idName}`));
-    const beginleft = computed(() => barDom.value?.getBoundingClientRect().x || 0);
+    const beginleft = () => {
+       return barDom.value?.getClientRects()[0].x || 0;
+    };
     const progressWidth = () => {
       return barDom.value?.clientWidth || 0;
     }
@@ -63,7 +68,7 @@ export default defineComponent ({
 
     const moveStyle = computed(() => {
       return {
-        left: `${moveX.value}px`,
+        left: `${moveX.value - 6}px`,
       }
     })
     const isMouseEvent = ref(false);
@@ -83,7 +88,8 @@ export default defineComponent ({
     }
     const progressClick = (ev: any) => {
       const width = progressWidth();
-      const percent = ev.clientX - beginleft.value - 6
+      const begin = beginleft();
+      const percent = ev.clientX - begin;
       moveX.value = percent < 0 ? 0 : percent > width ? width : percent;
     }
     const barMouseup = () => {
