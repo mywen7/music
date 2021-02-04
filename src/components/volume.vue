@@ -55,7 +55,7 @@ export default defineComponent ({
   display: flex;
   align-items: center;
   .type-icon {
-    margin-right: 5px;
+    margin-right: 10px;
   }
   .volume-progress {
     width: 120px;
