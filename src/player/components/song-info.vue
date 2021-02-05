@@ -1,21 +1,21 @@
 <template>
   <div class="song">
     <div class="img-wrap" @click="$emit('img-click')">
-      <img class="img" :src="imgUrl"/>
+      <img class="img" :src="currentSong.imgUrl"/>
       <div class="icon-wrap">
         <Icon :size="24" :type="playControlIcon" color="white"/>
       </div>
     </div>
     <div class="song-detail">
       <div>
-        {{name}}
+        {{currentSong.name}}
         -
-        {{artist}}
+        {{currentSong.artists}}
       </div>
       <div class="detail-time">
-        {{currentTime}}
+        {{formatTime(currentSong.currentTime / 1000)}}
         /
-        {{duration}}
+        {{formatTime(currentSong.duration / 1000)}}
       </div>
     </div>
   </div>
@@ -28,7 +28,7 @@ import { formatTime } from '../../libs/common';
 
 export default defineComponent ({
   props: {
-    currentSong: Object,
+    currentSong: Object as PropType<SongInfo>,
     isPlayerShow: {
       type: Boolean,
       default: false,
@@ -36,12 +36,15 @@ export default defineComponent ({
   },
   setup(props) {
     const playControlIcon = computed(() => props.isPlayerShow ? 'shrink' : 'open');
-    const currentSong = computed(() => props.currentSong as SongInfo);
+    const currentSong: Ref<SongInfo> = computed(() => {
+      return {
+        ...(props.currentSong as SongInfo),
+      }
+    });
     return {
-      ...currentSong.value,
-      currentTime: formatTime(currentSong.value.currentTime),
-      duration: formatTime(currentSong.value.duration / 1000),
+      currentSong,
       playControlIcon,
+      formatTime,
     }
   },
 });

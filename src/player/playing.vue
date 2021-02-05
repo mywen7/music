@@ -9,8 +9,8 @@
     >
       <p>请点击开始播放。</p>
       <template #reference>
-        <div class="popover-ref">
-          <PlayIcon :size="45"/>
+        <div class="popover-icon" @click="playingChange">
+          <Icon :size="20" :type="playIcon"/>
         </div>
       </template>
     </el-popover>
@@ -19,13 +19,27 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, computed } from 'vue';
+import { isPlaying, currentSong } from '../global/current-song';
 
 export default defineComponent ({
   props: {
     visible: {
       type: Boolean,
       default: false,
+    },
+  },
+  setup() {
+    const playIcon = computed(() => isPlaying.value ? 'pause' : 'play');
+    const playingChange = () => {
+      if (!currentSong.value.id) {
+        return;
+      }
+      isPlaying.value = !isPlaying.value;
+    }
+    return {
+      playIcon,
+      playingChange,
     }
   }
 });
@@ -36,13 +50,14 @@ export default defineComponent ({
   display: flex;
   justify-content: center;
   align-items: center;
-  .popover-ref {
+  .popover-icon {
     margin: 0 15px;
-    :deep(.play-icon-wrap) {
-      background-color: $theme-color;
-      .play-icon {
-        color: $white;
-      }
+    background-color: $theme-color;
+    display: flex;
+    @include flex-center;
+    @include round(45px);
+    i {
+      color: $white;
     }
   }
 }

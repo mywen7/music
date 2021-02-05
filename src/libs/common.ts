@@ -16,7 +16,7 @@ export function isFullscreenFn() {
   return document.fullscreenElement;
 }
 
-export function formatTime(interval: number) {
+export function formatTime(interval: number): string {
   const minute = Math.floor(interval / 60).toString().padStart(2, '0');
   const second = Math.floor(interval % 60).toString().padStart(2, '0');
   return `${minute}:${second}`

@@ -50,9 +50,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, PropType, Ref } from 'vue';
-import { ModeMap } from '../interface';
-import Share from './share.vue';
+import { defineComponent, ref, Ref, defineEmit, useContext } from 'vue';
+import { ModeMap } from './interface';
+import Share from './components/share.vue';
 import PlayQueue from './play-queue.vue';
 
 function useMode() {
@@ -92,21 +92,17 @@ function usePlaylist() {
     onPlaylistVisible,
   }
 }
-function useVolume() {
-  const volumeChange = (volume: number) => {
-    console.log(volume);
-  }
-  return {
-    volumeChange,
-  }
-}
+
 
 export default defineComponent ({
   components: { Share, PlayQueue },
-  setup() {
+  setup(props, { emit }) {
     const{ playModeMap, modeVisible, playingMode, modeClick, modeChange } = useMode();
     const { onPlaylistVisible, playlistVisible } = usePlaylist();
-    const { volumeChange } = useVolume();
+
+    const volumeChange = (volume: number) => {
+      emit('volume-change', volume)
+    }
     const goGithub = () => {
       window.open('https://github.com/mywen7/music');
     }

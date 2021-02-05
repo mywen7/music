@@ -11,12 +11,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, Ref, onMounted, watch } from 'vue';
+import { defineComponent, ref, Ref, onMounted, watch, toRaw } from 'vue';
 import { Song, SongType } from './interface';
 import http from '@/libs/fetch';
-import { formatTime } from '../../libs/common';
 import { RouterPush} from '../router';
 import SongsTable from './components/songs-table.vue';
+import { currentSong } from '../../global/current-song';
 
 function useFetchData() {
   const songList: Ref<Song[]> = ref([]);
@@ -34,7 +34,7 @@ function useFetchData() {
           id: ele.id,
           name: ele.name,
           albumName: ele.album.name,
-          duration: formatTime(ele.duration / 1000),
+          duration: ele.duration,
           imgUrl: ele.album.picUrl,
           artists: ele.artists.map((item: any) => item.name)
                               .join('/'),
@@ -89,7 +89,10 @@ function useTable() {
     routerPush('mv', id);
   }
   const rowClick = (row: any) => {
-    routerPush('song', row.id);
+    currentSong.value = {
+      ...row,
+      currentTime: 0,
+    }
   }
   return { indexMethod, goMv, rowClick }
 }

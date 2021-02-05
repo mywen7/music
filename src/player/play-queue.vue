@@ -6,7 +6,7 @@
     </el-tabs>
     <div v-if="playListsongs.length <= 0" class="empty">
       <span class="empty-tip">暂无单曲</span>
-      <img class="empty-img" src="../../assets/empty.jpg"/>
+      <img class="empty-img" src="../assets/empty.jpg"/>
     </div>
     <songs-table
       v-else
@@ -21,9 +21,9 @@
 
 <script lang="ts">
 import { defineComponent, ref, Ref } from 'vue';
-import SongsTable from '../../views/songs/components/songs-table.vue';
-import { Song } from '../../views/songs/interface';
-import { songList } from '../../global/playlist-queue';
+import SongsTable from '../views/songs/components/songs-table.vue';
+import { Song } from '../views/songs/interface';
+import { songList } from '../global/playlist-queue';
 
 export default defineComponent ({
   components: { SongsTable },

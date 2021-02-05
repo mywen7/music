@@ -46,7 +46,7 @@ export default defineComponent ({
       isSilence,
       DEFAULT_KEY,
     }
-  }
+  },
 });
 </script>
 

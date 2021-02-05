@@ -50,7 +50,7 @@ export default defineComponent ({
   &:hover {
     background-color: $theme-color;
     .play-icon {
-      color: $red;
+      color: $white;
     }
   }
 }

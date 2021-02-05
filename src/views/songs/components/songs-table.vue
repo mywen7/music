@@ -35,11 +35,11 @@
         label="专辑" 
         prop="albumName"
         />
-      <el-table-column 
-        label="时长" 
-        prop="duration"
-        :width="100"
-        />
+      <el-table-column label="时长" :width="100">
+        <template #default="scope">
+          {{formatTime(scope.row.duration / 1000)}}
+        </template>
+      </el-table-column>
     </el-table>
   </div>
 </template>
@@ -48,6 +48,7 @@
 import { defineComponent, PropType } from 'vue';
 import { Song } from '../interface';
 import songCard from './song-card.vue';
+import { formatTime } from '../../../libs/common';
 
 export default defineComponent ({
   components: { songCard },
@@ -73,6 +74,7 @@ export default defineComponent ({
     return {
       goMv,
       rowClick,
+      formatTime,
     }
   }
 });
