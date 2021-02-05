@@ -35,6 +35,10 @@ export default defineComponent ({
       default: false,
     },
     defaultKey: String,
+    percent: {
+      type: Number,
+      default: 0,
+    },
   },
   setup(props, { emit }) {
     const moveX = ref(0);
@@ -51,6 +55,13 @@ export default defineComponent ({
         moveX.value = 0;
       } else {
         moveX.value++;
+      }
+    })
+    const disabled = ref(false);
+    watch(() => props.percent, () => {
+      if (!disabled.value) {
+        const width = progressWidth();
+        moveX.value = width * props.percent;
       }
     })
     const barDom = computed(() => document.getElementById(`progress-bar-${props.idName}`));
@@ -96,6 +107,10 @@ export default defineComponent ({
       if (isMouseEvent.value) {
         mouseup();
       }
+      const width = progressWidth();
+      const percent = moveX.value / width;
+      emit('mouse-up-end', isNaN(percent) ? 0 : percent);
+      disabled.value = false;
     }
     return {
       mousedown,

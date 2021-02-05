@@ -13,7 +13,7 @@
         {{currentSong.artists}}
       </div>
       <div class="detail-time">
-        {{formatTime(currentSong.currentTime / 1000)}}
+        {{formatTime(currentSongTime)}}
         /
         {{formatTime(currentSong.duration / 1000)}}
       </div>
@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, Ref, ref, computed, PropType } from 'vue';
+import { defineComponent, Ref, ref, computed, PropType, inject } from 'vue';
 import { SongInfo } from '../interface';
 import { formatTime } from '../../libs/common';
 
@@ -41,8 +41,10 @@ export default defineComponent ({
         ...(props.currentSong as SongInfo),
       }
     });
+    const currentSongTime = inject('currentTime', 0);
     return {
       currentSong,
+      currentSongTime,
       playControlIcon,
       formatTime,
     }

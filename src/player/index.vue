@@ -12,11 +12,12 @@
     <play-type @volume-change="volumeChange"/>
     <div class="song-progress">
       <ProgressBar
+        v-if="playingSong.id"
         id-name="song"
-        default-key="1"
         :is-zero="false"
-        @percent-change="percentChange"
-        ref="progressDom"
+        :percent="songPercent"
+        @mouse-up-end="percentChange"
+        @btn-down="onProgressBtnDown"
       />
     </div>
     <audio
@@ -30,14 +31,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, Ref, ref, computed, watch, nextTick, onMounted } from 'vue';
+import { defineComponent, Ref, ref, watch, nextTick, onMounted, provide, readonly, ComputedRef } from 'vue';
 import songInfo from './components/song-info.vue';
 import Playing from './playing.vue';
 import PlayType from './play-type.vue';
 import { playingSong, isPlaying } from '../global/current-song';
 import { DEFAULT_VOLUME, DEFAULT_KEY } from '../components/volume.vue';
-import { PlayingSong } from './interface';
-import ProgressBar from '../components/progress-bar.vue';
 
 function useSongInfo() {
   const isPlayerShow = ref(false);
@@ -51,15 +50,19 @@ function useAudio() {
   const audioDom: Ref<HTMLAudioElement | null> = ref(null);
   const songReady = ref(false);
   const autoplayError = ref(false);
-  const progressDom: Ref<typeof ProgressBar | null> = ref(null);
+
+  const currentTime = ref(0);
+  provide('currentTime', readonly(currentTime));
+  const songPercent = ref(0);
   const updateTime = (ev: any) => {
-    console.log(ev.target.currentTime);
-    playingSong.value.currentTime = ev.target.currentTime;
+    currentTime.value = ev.target.currentTime;
+    songPercent.value = currentTime.value * 1000 / playingSong.value.duration;
   }
   const percentChange = (percent: number) => {
-    console.log(percent)
+    const per = playingSong.value.duration * percent / 1000;
+    (audioDom.value as HTMLAudioElement).currentTime = per;
   }
-  
+
   const audioReady = () => {
     songReady.value = true;
   }
@@ -91,7 +94,7 @@ function useAudio() {
   })
 
   let timer: any = null;
-  watch(() => playingSong.value.id, (newId: number, oldId: number) => {
+  watch(() => playingSong.value.id, () => {
     isPlaying.value = false;
     setAudioCurrentTime(0)
     songReady.value = false;
@@ -113,6 +116,7 @@ function useAudio() {
     autoplayError,
     setAudioCurrentTime,
     end,
+    songPercent,
   }
 }
 function useVolume(audioDom: Ref<HTMLAudioElement | null>) {
@@ -131,7 +135,7 @@ export default defineComponent ({
   setup() {
     const { isPlayerShow, songInfoImgClick } = useSongInfo();
     const { audioDom, updateTime, percentChange, audioReady,
-    autoplayError, end,
+    autoplayError, end, songPercent,
     } = useAudio();
     const { volumeChange } = useVolume(audioDom)
     return {
@@ -146,6 +150,7 @@ export default defineComponent ({
       volumeChange,
       end,
       isPlaying,
+      songPercent,
     }
   },
 });
@@ -162,8 +167,18 @@ export default defineComponent ({
   .song-progress {
     position: absolute;
     top: -12px;
-    left: -14px;
+    left: -20px;
     right: 0;
+    :deep(.progress-bar) {
+      .progress-btn {
+        opacity: 0;
+      }
+      &:hover {
+        .progress-btn {
+          opacity: 1;
+        }
+      }
+    }
   }
 }
 </style>

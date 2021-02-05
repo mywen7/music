@@ -6,7 +6,6 @@ export const currentSong: Ref<SongInfo> = ref({
   name: '',
   imgUrl: '',
   artists: '',
-  currentTime: 0,
   duration: 0,
 });
 
@@ -15,7 +14,6 @@ export const playingSong: Ref<PlayingSong> = ref({
   name: '',
   imgUrl: '',
   artists: '',
-  currentTime: 0,
   duration: 0,
   url: '',
 })

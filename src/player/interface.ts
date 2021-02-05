@@ -3,7 +3,6 @@ export interface SongInfo {
   name: string;
   artists: string;
   imgUrl: string;
-  currentTime: number;
   duration: number;
 }
 export interface PlayingSong extends SongInfo {

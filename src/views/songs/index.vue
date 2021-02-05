@@ -91,7 +91,6 @@ function useTable() {
   const rowClick = (row: any) => {
     currentSong.value = {
       ...row,
-      currentTime: 0,
     }
   }
   return { indexMethod, goMv, rowClick }
