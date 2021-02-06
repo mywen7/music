@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, computed } from 'vue';
 import { copy } from '../../libs/directives';
 import { ElMessageBox } from 'element-plus';
 
@@ -17,17 +17,20 @@ export default defineComponent ({
   props: {
     copyText: {
       type: String,
-      default: '',
+      default: 'https://qqqqq/q/q//qq/',
     },
   },
   setup(props) {
     const copyTarget = {
-      text: props.copyText,
+      text: computed(() => props.copyText),
       success() {
         ElMessageBox.alert('分享链接已经复制到剪贴板，快去和小伙伴一起听歌吧！', '提示', {
           confirmButtonText: '确定',
           confirmButtonClass: 'sure-btn',
           lockScroll: true,
+          callback() {
+            console.log('success')
+          }
         });
       },
     };

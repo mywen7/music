@@ -1,4 +1,4 @@
-import { DirectiveBinding } from 'vue';
+import { ComputedRef, DirectiveBinding } from 'vue';
 
 /**
  * 原生复制功能
@@ -8,7 +8,7 @@ import { DirectiveBinding } from 'vue';
  */
 const copyOrigin = (
   elem: HTMLElement,
-  text: string,
+  text: ComputedRef<string>,
   success?: () => void,
 ) => {
   if (!text) {
@@ -16,7 +16,7 @@ const copyOrigin = (
   }
   const textarea = document.createElement('textarea');
   textarea.setAttribute('readonly', '');
-  textarea.value = text;
+  textarea.value = text.value;
   elem.appendChild(textarea);
 
   let result: boolean = false;
@@ -48,11 +48,8 @@ const copyOrigin = (
 export const copy = {
   mounted(elem: HTMLElement, binding: DirectiveBinding) {
     const value = binding.value;
-
     elem.addEventListener('click', () => {
-      if (typeof value === 'string' || typeof value === 'number') {
-        copyOrigin(elem, `${value}`);
-      } else {
+      if (value.text.value !== '') {
         copyOrigin(elem, value.text, value.success);
       }
     })
