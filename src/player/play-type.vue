@@ -45,7 +45,7 @@
     <!-- 音量 -->
     <Volume @volume-change="volumeChange"/>
     <!-- github -->
-    <Icon :size="18" type="github" @click="goGithub"/>
+    <Icon :size="18" type="github"  class="github-icon" @click="goGithub"/>
   </div>
 </template>
 
@@ -126,8 +126,11 @@ export default defineComponent ({
   display: flex;
   justify-content: space-between;
   align-items: center;
-  // padding-left: 270px;
-  // padding-right: 80px;
+  padding-left: 240px;
+  padding-right: 70px;
+}
+.github-icon {
+  margin-left: 20px;
 }
 .mode-tooltip {
   padding: 0 10px;
