@@ -17,7 +17,7 @@ export default defineComponent ({
   props: {
     copyText: {
       type: String,
-      default: '1111',
+      default: '',
     },
   },
   setup(props) {

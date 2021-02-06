@@ -1,5 +1,6 @@
 <template>
   <div class="my-player">
+    <!-- 歌曲信息 -->
     <div>
       <song-info 
         v-if="playingSong.id"
@@ -8,8 +9,11 @@
         @img-click="songInfoImgClick"
       />
     </div>
+    <!-- 上一曲 播放 下一曲 -->
     <playing :visible="autoplayError"/>
-    <play-type @volume-change="volumeChange"/>
+    <!-- 模式选择 -->
+    <play-type :copy-text="playingSong.url" @volume-change="volumeChange"/>
+    <!-- 播放进度条 -->
     <div class="song-progress">
       <ProgressBar
         v-if="playingSong.id"
@@ -18,6 +22,7 @@
         @mouse-up-end="mouseUpEnd"
       />
     </div>
+    <!-- 音频 -->
     <audio
       :src="playingSong.url"
       ref="audioDom"

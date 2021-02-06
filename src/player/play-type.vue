@@ -1,6 +1,6 @@
 <template>
   <div class="play-type">
-    <share/>
+    <share :copy-text="copyText"/>
     <!-- 模式变化 -->
     <el-tooltip
       placement="top"
@@ -50,7 +50,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, Ref, defineEmit, useContext } from 'vue';
+import { defineComponent, ref, Ref } from 'vue';
 import { ModeMap } from './interface';
 import Share from './components/share.vue';
 import PlayQueue from './play-queue.vue';
@@ -96,6 +96,12 @@ function usePlaylist() {
 
 export default defineComponent ({
   components: { Share, PlayQueue },
+  props: {
+    copyText: {
+      type: String,
+      default: '',
+    },
+  },
   setup(props, { emit }) {
     const{ playModeMap, modeVisible, playingMode, modeClick, modeChange } = useMode();
     const { onPlaylistVisible, playlistVisible } = usePlaylist();
