@@ -14,10 +14,8 @@
       <ProgressBar
         v-if="playingSong.id"
         id-name="song"
-        :is-zero="false"
         :percent="songPercent"
-        @mouse-up-end="percentChange"
-        @btn-down="onProgressBtnDown"
+        @mouse-up-end="mouseUpEnd"
       />
     </div>
     <audio
@@ -51,18 +49,6 @@ function useAudio() {
   const songReady = ref(false);
   const autoplayError = ref(false);
 
-  const currentTime = ref(0);
-  provide('currentTime', readonly(currentTime));
-  const songPercent = ref(0);
-  const updateTime = (ev: any) => {
-    currentTime.value = ev.target.currentTime;
-    songPercent.value = currentTime.value * 1000 / playingSong.value.duration;
-  }
-  const percentChange = (percent: number) => {
-    const per = playingSong.value.duration * percent / 1000;
-    (audioDom.value as HTMLAudioElement).currentTime = per;
-  }
-
   const audioReady = () => {
     songReady.value = true;
   }
@@ -78,11 +64,21 @@ function useAudio() {
       }
     };
   }
-  const audioPause = () => {
-    audioDom.value?.pause();
+
+  const currentTime = ref(0);
+  provide('currentTime', readonly(currentTime));
+  const songPercent = ref(0);
+  const updateTime = (ev: any) => {
+    currentTime.value = ev.target.currentTime;
+    songPercent.value = currentTime.value * 1000 / playingSong.value.duration;
   }
+
   const setAudioCurrentTime = (time: number) => {
     (audioDom.value as HTMLAudioElement).currentTime = time;
+  }
+
+  const audioPause = () => {
+    audioDom.value?.pause();
   }
   const end = () => {
     isPlaying.value = false;
@@ -105,18 +101,17 @@ function useAudio() {
       isPlaying.value = true;
     }, 1000);
   })
+  return { audioDom, updateTime, audioReady, audioPlay, audioPause, autoplayError,
+    setAudioCurrentTime, end, songPercent };
+}
+
+function useProgress(setAudioCurrentTime: (time: number) => void) {
+  const mouseUpEnd = (percent: number) => {
+    const per = playingSong.value.duration * percent / 1000;
+    setAudioCurrentTime(per);
+  }
   return {
-    audioDom,
-    updateTime,
-    percentChange,
-    audioReady,
-    songReady,
-    audioPlay,
-    audioPause,
-    autoplayError,
-    setAudioCurrentTime,
-    end,
-    songPercent,
+    mouseUpEnd,
   }
 }
 function useVolume(audioDom: Ref<HTMLAudioElement | null>) {
@@ -134,15 +129,16 @@ export default defineComponent ({
   components: { songInfo, Playing, PlayType },
   setup() {
     const { isPlayerShow, songInfoImgClick } = useSongInfo();
-    const { audioDom, updateTime, percentChange, audioReady,
-    autoplayError, end, songPercent,
+    const {
+      audioDom, updateTime, audioReady, autoplayError, end,
+      songPercent, setAudioCurrentTime,
     } = useAudio();
+    const { mouseUpEnd } = useProgress(setAudioCurrentTime);
     const { volumeChange } = useVolume(audioDom)
     return {
       playingSong,
       songInfoImgClick,
       isPlayerShow,
-      percentChange,
       updateTime,
       audioDom,
       audioReady,
@@ -151,6 +147,7 @@ export default defineComponent ({
       end,
       isPlaying,
       songPercent,
+      mouseUpEnd,
     }
   },
 });

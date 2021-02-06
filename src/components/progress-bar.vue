@@ -3,7 +3,7 @@
     class="progress-bar"
     :id="`progress-bar-${idName}`"
     @mouseup="barMouseup"
-    @click="progressClick"
+    @mousedown="progressClick"
   >
     <div class="progress-banner" >
       <div 
@@ -42,14 +42,17 @@ export default defineComponent ({
   },
   setup(props, { emit }) {
     const moveX = ref(0);
+    // 给滑块初始位置
     onMounted(() => {
       moveX.value = Number(localStorage.getItem(props.defaultKey || '')) * progressWidth();
     })
+    // 监听滑块位置汇报进度
     watch(moveX, () => {
       const width = progressWidth();
       const percent = moveX.value / width;
       emit('percent-change', isNaN(percent) ? 0 : percent);
     })
+    // 滑块位置置为0或取消
     watch(() => props.isZero, () => {
       if (props.isZero) {
         moveX.value = 0;
@@ -57,17 +60,21 @@ export default defineComponent ({
         moveX.value++;
       }
     })
-    const disabled = ref(false);
+    const disable = ref(false);
+    // 有传入进度的时候使用传入的进度更改滑块位置
     watch(() => props.percent, () => {
-      if (!disabled.value) {
+      if (!disable.value) {
         const width = progressWidth();
         moveX.value = width * props.percent;
       }
     })
+    // 进度条Dom
     const barDom = computed(() => document.getElementById(`progress-bar-${props.idName}`));
+    // 进度条左侧起始位置位于浏览器的哪里
     const beginleft = () => {
        return barDom.value?.getClientRects()[0].x || 0;
     };
+    // 整个进度条的长度
     const progressWidth = () => {
       return barDom.value?.clientWidth || 0;
     }
@@ -82,27 +89,35 @@ export default defineComponent ({
         left: `${moveX.value - 6}px`,
       }
     })
+    // 是否处于移动事件中
     const isMouseEvent = ref(false);
 
+    // 进度条上鼠标移动
     const moveEvent = (elem: any) => {
       isMouseEvent.value = true;
       if (elem.buttons === 1) {
         progressClick(elem);
       }
     }
+    // 滑块按下
     const mousedown = () => {
       barDom.value?.addEventListener('mousemove', moveEvent)
     }
+    // 滑块抬起
     const mouseup = () => {
       barDom.value?.removeEventListener('mousemove', moveEvent)
       isMouseEvent.value = false;
     }
+    // 进度条按下
     const progressClick = (ev: any) => {
+      disable.value = true;
       const width = progressWidth();
       const begin = beginleft();
       const percent = ev.clientX - begin;
       moveX.value = percent < 0 ? 0 : percent > width ? width : percent;
+
     }
+    // 进度条抬起
     const barMouseup = () => {
       if (isMouseEvent.value) {
         mouseup();
@@ -110,7 +125,7 @@ export default defineComponent ({
       const width = progressWidth();
       const percent = moveX.value / width;
       emit('mouse-up-end', isNaN(percent) ? 0 : percent);
-      disabled.value = false;
+      disable.value = false;
     }
     return {
       mousedown,
