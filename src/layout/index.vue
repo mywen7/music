@@ -1,5 +1,5 @@
 <template>
-  <el-container>
+  <el-container class="m-container">
     <el-header style="padding: 0;">
       <yi-header />
     </el-header>
@@ -11,7 +11,7 @@
         <router-view />
       </el-main>
     </el-container>
-    <el-footer>
+    <el-footer class="m-footer">
       <yi-footer></yi-footer>
     </el-footer>
   </el-container>
@@ -32,7 +32,11 @@ export default defineComponent ({
 });
 </script>
 <style lang="scss" scoped>
+.m-container {
+  overflow-x: hidden;
+}
 .m-main {
   height: calc(100vh - #{$header-height} * 2);
+  min-width: $layout-content-min-width;
 }
 </style>
