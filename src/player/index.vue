@@ -91,9 +91,9 @@ function useAudio() {
 
   let timer: any = null;
   watch(() => playingSong.value.id, () => {
+    songReady.value = false;
     isPlaying.value = false;
     setAudioCurrentTime(0)
-    songReady.value = false;
     if (timer) {
       clearTimeout(timer)
     }
