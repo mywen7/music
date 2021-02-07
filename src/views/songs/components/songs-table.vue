@@ -1,6 +1,10 @@
 <template>
   <div>
-    <el-table :data="songList" @row-click="rowClick">
+    <el-table 
+      :data="songList" 
+      @row-click="rowClick"
+      :stripe="stripe"
+    >
       <el-table-column 
         :width="70" 
         align="center"
@@ -54,7 +58,6 @@ export default defineComponent ({
   components: { songCard },
   props: {
     songList: Array as PropType<Song[]>,
-    indexMethod: Function,
     showImg: {
       type: Boolean,
       default: true,
@@ -62,6 +65,10 @@ export default defineComponent ({
     showIndex: {
       type: Boolean,
       default: true,
+    },
+    stripe: {
+      type: Boolean,
+      default: false,
     },
   },
   setup(props, { emit }) {
@@ -71,10 +78,14 @@ export default defineComponent ({
     const rowClick = (row: any) => {
       emit('row-click', row)
     }
+    const indexMethod = (index: number) => {
+      return (index + 1).toString().padStart(2, '0');
+    }
     return {
       goMv,
       rowClick,
       formatTime,
+      indexMethod,
     }
   }
 });

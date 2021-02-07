@@ -3,7 +3,6 @@
     <Tags :tags="tags" @tag-change="tagChange"/>
     <songs-table
       :song-list="songList"
-      :index-method="indexMethod"
       @go-mv="goMv"
       @row-click="rowClick"
     />
@@ -81,9 +80,6 @@ function useTagChange(songType: Ref<number>) {
 }
 
 function useTable() {
-  const indexMethod = (index: number) => {
-    return (index + 1).toString().padStart(2, '0');
-  }
   const { routerPush } = RouterPush();
   const goMv = (id: number) => {
     routerPush('mv', id);
@@ -93,7 +89,7 @@ function useTable() {
       ...row,
     }
   }
-  return { indexMethod, goMv, rowClick }
+  return { goMv, rowClick }
 }
 export default defineComponent ({
   components: { SongsTable },
@@ -101,12 +97,11 @@ export default defineComponent ({
   setup() {
     const { songType, songList } = useFetchData();
     const { tags, tagChange } = useTagChange(songType);
-    const { indexMethod, goMv, rowClick } = useTable();
+    const { goMv, rowClick } = useTable();
     return {
       tags,
       tagChange,
       songList,
-      indexMethod,
       goMv,
       rowClick,
     }

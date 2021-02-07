@@ -2,7 +2,7 @@
   <div class="mv-card" @click="$emit('cardClick',cardInfo.id)">
     <div class="img-wrap">
       <img class="img" :src="cardInfo.img"/>
-      <div class="play-count">播放量：{{cardInfo.playCount}}</div>
+      <div class="play-count">播放量：{{formatNumber(cardInfo.playCount)}}</div>
       <PlayIcon :size="50" class="play-icon"/>
     </div>
     <div class="desc name">{{ cardInfo.name }}</div>
@@ -13,11 +13,15 @@
 <script lang="ts">
 import { defineComponent, PropType, reactive } from 'vue';
 import { MV } from '../interface';
+import { formatNumber } from '../../../libs/common';
 
 export default defineComponent ({
   props: {
     cardInfo: Object as PropType<MV>,
   },
+  setup() {
+    return {formatNumber};
+  }
 })
 </script>
 <style lang="scss" scoped>

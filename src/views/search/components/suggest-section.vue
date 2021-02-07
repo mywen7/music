@@ -25,16 +25,12 @@ function transForType(type: string) {
   switch (type) {
     case 'playlist':
       return TypeEnum.playlist;
-      break;
     case 'mv':
       return TypeEnum.mv;
-      break;
     case 'artist':
       return TypeEnum.artist;
-      break;
     case 'album':
       return TypeEnum.album;
-      break;
     default:
       return TypeEnum.song;
   }

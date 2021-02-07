@@ -38,3 +38,8 @@ watch(() => currentSong.value.id, () => {
 
 export const isPlaying: Ref<boolean> = ref(false);
 
+// 历史播放歌单
+export const playlistHistory: Ref<PlayingSong[]> = ref([]);
+export const setplaylisy = () => {
+
+};

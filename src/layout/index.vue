@@ -36,6 +36,7 @@ export default defineComponent ({
   overflow-x: hidden;
 }
 .m-main {
+  user-select: none;
   height: calc(100vh - #{$header-height} * 2);
   min-width: $layout-content-min-width;
 }

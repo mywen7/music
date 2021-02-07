@@ -1,4 +1,5 @@
 import { onMounted, reactive, ref, Ref, UnwrapRef, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
 export { default as Pagination} from './pagination.vue';
 
@@ -25,8 +26,10 @@ export interface PageProps<T> {
 };
 
 export default function usePage<T>(fetch: Fetch<T>): PageProps<T> {
-  const size = ref(50);
-  const page = ref(1);
+  const route = useRoute();
+  const router = useRouter();
+  const size = ref(Number(route.query.size) || 50);
+  const page = ref(Number(route.query.page) || 1);
   const tag = ref(['全部']);
   const total = ref(0);
   const onPageChange = (_page: number) => {
@@ -45,7 +48,18 @@ export default function usePage<T>(fetch: Fetch<T>): PageProps<T> {
       console.log('error in usePagination');
     }
   };
-  watch(page, fetchdata);
+  watch(page, () => {
+    if (route.query.page && route.query.size) {
+      router.replace({
+      ...route,
+        query: {
+          ...route.query,
+          page: page.value,
+        },
+      })
+    };
+    fetchdata();
+  });
   watch(tag, () => {
     if (page.value === 1) {
       fetchdata();

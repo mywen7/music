@@ -38,5 +38,11 @@ export default defineComponent ({
 <style lang="scss" scoped>
 .el-pagination {
   text-align: right;
+  :deep(.el-pager li.active) {
+    color: $theme-color;
+  }
+  :deep(.el-pager li:hover){
+    color: $theme-color;
+  }
 }
 </style>

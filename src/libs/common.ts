@@ -21,3 +21,8 @@ export function formatTime(interval: number): string {
   const second = Math.floor(interval % 60).toString().padStart(2, '0');
   return `${minute}:${second}`
 }
+
+export function formatNumber(count: number) {
+  const num = Number(count) || 0
+  return num > 100000 ? `${Math.round(num / 10000)}万` : num;
+}
